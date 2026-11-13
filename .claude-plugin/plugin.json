@@ -1,0 +1,8 @@
+{
+  "name": "exposure-contour",
+  "version": "1.2.0",
+  "description": "作業場所有害物暴露濃度分布圖：佈點、資料整理、普通克利金製圖、可信度判定、熱區與超過容許濃度範圍",
+  "author": {
+    "name": "James"
+  }
+}

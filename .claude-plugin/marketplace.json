@@ -1,0 +1,13 @@
+{
+  "name": "conctour",
+  "owner": { "name": "James" },
+  "metadata": { "description": "作業場所濃度分布圖製作工具" },
+  "plugins": [
+    {
+      "name": "exposure-contour",
+      "source": "./",
+      "description": "作業場所有害物暴露濃度分布圖：佈點、資料整理、普通克利金製圖、可信度判定、熱區與超過容許濃度範圍",
+      "version": "1.2.0"
+    }
+  ]
+}
