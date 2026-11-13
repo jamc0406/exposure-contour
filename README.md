@@ -4,6 +4,6 @@
 
 ## 下載
 
-- **安裝檔：[exposure-contour.skill](dist/exposure-contour.skill)**（點進去後按右上角下載鍵），或到右側 [Releases](../../releases/latest) 下載最新版。
+- **安裝檔：** 到右側 [Releases](../../releases/latest) 下載最新版。
 
 
