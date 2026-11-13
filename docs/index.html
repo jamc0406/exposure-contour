@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-Hant" xml:lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.13" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>濃度分布圖製作技術手冊</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<nav class="topbar">
+  <a href="https://github.com/jamc0406/exposure-contour">← GitHub 專案</a>
+  <a class="btn" href="https://github.com/jamc0406/exposure-contour/releases/latest/download/exposure-contour.skill">下載 Skill 安裝檔</a>
+  <a href="濃度分布圖製作技術手冊.docx">下載 Word 檔</a>
+  <a href="https://github.com/jamc0406/exposure-contour/blob/main/docs/manual.md">Markdown 版</a>
+  <a href="https://jamc0406.github.io/ConcTour/">ConcTour 網頁工具</a>
+</nav>
+<header id="title-block-header">
+<h1 class="title">作業場所有害物暴露濃度分布圖製作技術手冊</h1>
+<p class="subtitle">直讀式儀器量測與 Skill、ConcTour 製作濃度分布圖</p>
+<p class="date">勞動部勞動及職業安全衛生研究所委託研究計畫　·　中華民國
+115 年 11 月（草稿）</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<h2 id="toc-title">目錄</h2>
+<ul>
+<li><a href="#第一章-前言" id="toc-第一章-前言">第一章　前言</a>
+<ul>
+<li><a href="#一目的" id="toc-一目的">一、目的</a></li>
+<li><a href="#二適用範圍" id="toc-二適用範圍">二、適用範圍</a></li>
+<li><a href="#三使用限制" id="toc-三使用限制">三、使用限制</a></li>
+<li><a href="#四名詞定義" id="toc-四名詞定義">四、名詞定義</a></li>
+<li><a href="#五本手冊之使用方式"
+id="toc-五本手冊之使用方式">五、本手冊之使用方式</a></li>
+</ul></li>
+<li><a href="#第二章-製圖工具與-skill-安裝"
+id="toc-第二章-製圖工具與-skill-安裝">第二章　製圖工具與 Skill 安裝</a>
+<ul>
+<li><a href="#一製圖工具之選擇"
+id="toc-一製圖工具之選擇">一、製圖工具之選擇</a></li>
+<li><a href="#二skill-之內容" id="toc-二skill-之內容">二、Skill
+之內容</a></li>
+<li><a href="#三安裝-skill" id="toc-三安裝-skill">三、安裝
+Skill</a></li>
+<li><a href="#四安裝後之驗證"
+id="toc-四安裝後之驗證">四、安裝後之驗證</a></li>
+</ul></li>
+<li><a href="#第三章-佈點規劃"
+id="toc-第三章-佈點規劃">第三章　佈點規劃</a>
+<ul>
+<li><a href="#一以-skill-辦理佈點規劃"
+id="toc-一以-skill-辦理佈點規劃">一、以 Skill 辦理佈點規劃</a></li>
+<li><a href="#二平面圖及場域資訊取得注意事項"
+id="toc-二平面圖及場域資訊取得注意事項">二、平面圖及場域資訊取得注意事項</a></li>
+<li><a href="#三標示障礙區"
+id="toc-三標示障礙區">三、標示障礙區</a></li>
+<li><a href="#四判斷可能逸散位置"
+id="toc-四判斷可能逸散位置">四、判斷可能逸散位置</a></li>
+<li><a href="#五決定測點數量"
+id="toc-五決定測點數量">五、決定測點數量</a></li>
+<li><a href="#六決定測點位置"
+id="toc-六決定測點位置">六、決定測點位置</a></li>
+<li><a href="#七選擇量測方式及記錄表"
+id="toc-七選擇量測方式及記錄表">七、選擇量測方式及記錄表</a></li>
+</ul></li>
+<li><a href="#第四章-現場量測"
+id="toc-第四章-現場量測">第四章　現場量測</a>
+<ul>
+<li><a href="#一共同事項" id="toc-一共同事項">一、共同事項</a></li>
+<li><a href="#二一台儀器逐點量測"
+id="toc-二一台儀器逐點量測">二、一台儀器逐點量測</a></li>
+<li><a href="#三多台儀器同時量測"
+id="toc-三多台儀器同時量測">三、多台儀器同時量測</a></li>
+</ul></li>
+<li><a href="#第五章-資料整理"
+id="toc-第五章-資料整理">第五章　資料整理</a>
+<ul>
+<li><a href="#一標準資料表格式及填寫規則"
+id="toc-一標準資料表格式及填寫規則">一、標準資料表格式及填寫規則</a></li>
+<li><a href="#二多台儀器同時量測之資料"
+id="toc-二多台儀器同時量測之資料">二、多台儀器同時量測之資料</a></li>
+<li><a href="#三一台儀器逐點量測之資料"
+id="toc-三一台儀器逐點量測之資料">三、一台儀器逐點量測之資料</a></li>
+<li><a href="#四手寫記錄或格式不一之表格"
+id="toc-四手寫記錄或格式不一之表格">四、手寫記錄或格式不一之表格</a></li>
+<li><a href="#五只有測點編號而無座標"
+id="toc-五只有測點編號而無座標">五、只有測點編號而無座標</a></li>
+<li><a href="#六重複量測" id="toc-六重複量測">六、重複量測</a></li>
+</ul></li>
+<li><a href="#第六章-資料檢核"
+id="toc-第六章-資料檢核">第六章　資料檢核</a>
+<ul>
+<li><a href="#一以-skill-辦理資料檢核"
+id="toc-一以-skill-辦理資料檢核">一、以 Skill 辦理資料檢核</a></li>
+<li><a href="#二檢核項目" id="toc-二檢核項目">二、檢核項目</a></li>
+<li><a href="#三可疑高值之判斷"
+id="toc-三可疑高值之判斷">三、可疑高值之判斷</a></li>
+<li><a href="#四位於障礙區內之測點"
+id="toc-四位於障礙區內之測點">四、位於障礙區內之測點</a></li>
+</ul></li>
+<li><a href="#第七章-製圖" id="toc-第七章-製圖">第七章　製圖</a>
+<ul>
+<li><a href="#一以-skill-製圖" id="toc-一以-skill-製圖">一、以 Skill
+製圖</a></li>
+<li><a href="#二計算方法及預設值"
+id="toc-二計算方法及預設值">二、計算方法及預設值</a></li>
+<li><a href="#三以-conctour-製圖" id="toc-三以-conctour-製圖">三、以
+ConcTour 製圖</a></li>
+</ul></li>
+<li><a href="#第八章-圖面驗證與補點"
+id="toc-第八章-圖面驗證與補點">第八章　圖面驗證與補點</a>
+<ul>
+<li><a href="#一以-skill-辦理圖面驗證與補點"
+id="toc-一以-skill-辦理圖面驗證與補點">一、以 Skill
+辦理圖面驗證與補點</a></li>
+<li><a href="#二驗證方式" id="toc-二驗證方式">二、驗證方式</a></li>
+<li><a href="#三判定原則" id="toc-三判定原則">三、判定原則</a></li>
+<li><a href="#四補點位置" id="toc-四補點位置">四、補點位置</a></li>
+<li><a href="#五固定參考點濃度漂移"
+id="toc-五固定參考點濃度漂移">五、固定參考點濃度漂移</a></li>
+</ul></li>
+<li><a href="#第九章-判讀與管理應用"
+id="toc-第九章-判讀與管理應用">第九章　判讀與管理應用</a>
+<ul>
+<li><a href="#一以-skill-辦理判讀" id="toc-一以-skill-辦理判讀">一、以
+Skill 辦理判讀</a></li>
+<li><a href="#二熱區判讀" id="toc-二熱區判讀">二、熱區判讀</a></li>
+<li><a href="#三管理值分區"
+id="toc-三管理值分區">三、管理值分區</a></li>
+<li><a href="#四管理應用" id="toc-四管理應用">四、管理應用</a></li>
+</ul></li>
+<li><a href="#附錄一-標準提示詞"
+id="toc-附錄一-標準提示詞">附錄一　標準提示詞</a>
+<ul>
+<li><a href="#提示詞-1-確認-skill-已安裝"
+id="toc-提示詞-1-確認-skill-已安裝">提示詞 1　確認 Skill 已安裝</a></li>
+<li><a href="#提示詞-2-依平面圖規劃測點"
+id="toc-提示詞-2-依平面圖規劃測點">提示詞 2　依平面圖規劃測點</a></li>
+<li><a href="#提示詞-3-確認障礙區與逸散位置"
+id="toc-提示詞-3-確認障礙區與逸散位置">提示詞
+3　確認障礙區與逸散位置</a></li>
+<li><a href="#提示詞-4-產出佈點資料表"
+id="toc-提示詞-4-產出佈點資料表">提示詞 4　產出佈點資料表</a></li>
+<li><a href="#提示詞-5-多台儀器同時量測之資料整理"
+id="toc-提示詞-5-多台儀器同時量測之資料整理">提示詞
+5　多台儀器同時量測之資料整理</a></li>
+<li><a href="#提示詞-6-一台儀器逐點量測之資料整理"
+id="toc-提示詞-6-一台儀器逐點量測之資料整理">提示詞
+6　一台儀器逐點量測之資料整理</a></li>
+<li><a href="#提示詞-7-手寫記錄或格式不一之表格"
+id="toc-提示詞-7-手寫記錄或格式不一之表格">提示詞
+7　手寫記錄或格式不一之表格</a></li>
+<li><a href="#提示詞-8-只有測點編號而無座標"
+id="toc-提示詞-8-只有測點編號而無座標">提示詞
+8　只有測點編號而無座標</a></li>
+<li><a href="#提示詞-9-檢查標準資料表"
+id="toc-提示詞-9-檢查標準資料表">提示詞 9　檢查標準資料表</a></li>
+<li><a href="#提示詞-10-說明可疑高值之現場情形"
+id="toc-提示詞-10-說明可疑高值之現場情形">提示詞
+10　說明可疑高值之現場情形</a></li>
+<li><a href="#提示詞-11-製圖" id="toc-提示詞-11-製圖">提示詞
+11　製圖</a></li>
+<li><a href="#提示詞-12-畫出管理值線並分區"
+id="toc-提示詞-12-畫出管理值線並分區">提示詞
+12　畫出管理值線並分區</a></li>
+<li><a href="#提示詞-13-更換色階" id="toc-提示詞-13-更換色階">提示詞
+13　更換色階</a></li>
+<li><a href="#提示詞-14-判斷圖面可信程度"
+id="toc-提示詞-14-判斷圖面可信程度">提示詞 14　判斷圖面可信程度</a></li>
+<li><a href="#提示詞-15-補點及第二輪合併"
+id="toc-提示詞-15-補點及第二輪合併">提示詞 15　補點及第二輪合併</a></li>
+<li><a href="#提示詞-16-固定參考點漂移"
+id="toc-提示詞-16-固定參考點漂移">提示詞 16　固定參考點漂移</a></li>
+<li><a href="#提示詞-17-熱區及管理值範圍"
+id="toc-提示詞-17-熱區及管理值範圍">提示詞 17　熱區及管理值範圍</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="第一章-前言">第一章　前言</h1>
+<h2 id="一目的">一、目的</h2>
+<p>作業場所有害物之濃度可以直讀式儀器或感測器於場域內多點量測，再以空間內插方法繪製濃度分布圖，此方法可協助事業單位找出高濃度區位、推斷逸散源方向，或作為通風改善、監測點位規劃及改善前後比較之參考。</p>
+<p>本手冊說明以直讀式儀器量測並製作濃度分布圖之方法，包括量測規劃、現場量測、資料整理、資料檢核、製圖、圖面驗證與補點。手冊所述之計算方法涵蓋本計畫開發之大型語言模型技能（以下簡稱
+Skill）及網頁製圖工具 ConcTour，使用者得依需要擇一使用。</p>
+<h2 id="二適用範圍">二、適用範圍</h2>
+<p>（一）室內、作業狀態於量測期間污染物濃度相對穩定之作業場所。</p>
+<p>（二）以直讀式儀器或感測器，於同一高度（原則為呼吸帶高度 1.5
+公尺）量測單一氣狀或粒狀污染物(氣膠)之水平分布。</p>
+<p>（三）場域以矩形為原則。L
+形或有隔間之場域，宜分成數個矩形區域分別量測及製圖。</p>
+<h2 id="三使用限制">三、使用限制</h2>
+<p>（一）濃度分布圖係以有限測點之實測值推估各位置之濃度，僅供區位判斷及管理參考，不得作為法定作業環境監測、時量平均容許濃度（TWA）或短時間時量平均容許濃度（STEL）暴露等評估之替代。</p>
+<p>（二）一張分布圖僅代表單一污染物、單一時段及單一高度之濃度分布。此外對總量型儀器（如光離子化偵測器PID）無法分辨混合物中之個別成分，應注意避免作為單一污染物濃度指標。</p>
+<p>（三）量測期間作業狀態應維持穩定。批次操作、間歇排放或作業狀態改變時，所得分布圖可能不具代表性；作業造成濃度變化時，應於變化之時段另行量測，並重新製圖。</p>
+<p>（四）不適用於室外、半戶外或風向變化大等之場域。</p>
+<p>（五）測點未涵蓋之區域屬推估值，不確定性較高。阻隔物兩側之實際濃度可能不連續，圖面以斜線遮蓋設備區，惟計算時仍視為連續面。</p>
+<p>（六）圖面最高值可能低於實際現場最高值，色階依各組資料之濃度範圍配置，判讀時應同時檢視色階數值。</p>
+<p>（七）工具所用之之克利金法採線性變異函數、slope ＝ 1、nugget ＝ 0
+固定設定，雖為實驗測定最穩定之結果，但對濃度之估計仍可能存在偏差，對濃度分佈結果有疑慮者應尋求專業人員判讀。</p>
+<h2 id="四名詞定義">四、名詞定義</h2>
+<table style="width:98%;">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 84%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">名詞</th>
+<th style="text-align: left;">定義</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">直讀式儀器</td>
+<td
+style="text-align: left;">可於現場直接讀出濃度之儀器，如光離子化偵測器（PID）、電化學式氣體偵測器、粒子計數器及低成本感測器。</td>
+</tr>
+<tr>
+<td style="text-align: left;">場域</td>
+<td
+style="text-align: left;">欲繪製濃度分布圖之矩形範圍。座標原點訂於場域左下角，X
+軸向右、Y 軸向上，單位為公尺。</td>
+</tr>
+<tr>
+<td style="text-align: left;">測點</td>
+<td style="text-align: left;">場域內實際量測濃度之位置，以測點編號（如
+P01）及 X、Y 座標表示，座標記至小數點後一位（0.1 公尺）。</td>
+</tr>
+<tr>
+<td style="text-align: left;">障礙區</td>
+<td
+style="text-align: left;">設備本體與基座、樓梯、軌道、隔間、儲架等無法站立量測之區域。製圖時以斜線遮蓋，不呈現濃度。</td>
+</tr>
+<tr>
+<td style="text-align: left;">逸散源</td>
+<td
+style="text-align: left;">污染物可能逸出之位置，包括設備接口、開放液面、人員操作點及通風不良處。</td>
+</tr>
+<tr>
+<td style="text-align: left;">標準資料表</td>
+<td
+style="text-align: left;">本計畫訂定之資料格式，記錄場域基本資料及各測點座標與濃度，Skill
+與 ConcTour 均可讀取。</td>
+</tr>
+<tr>
+<td style="text-align: left;">點位量測時間表</td>
+<td
+style="text-align: left;">一台儀器逐點量測時，記錄各測點開始與結束時間（或量測時長）之表格。</td>
+</tr>
+<tr>
+<td style="text-align: left;">儀器點位對應表</td>
+<td
+style="text-align: left;">多台儀器同時量測時，記錄每台儀器放置於哪一測點之表格。</td>
+</tr>
+<tr>
+<td style="text-align: left;">固定參考點</td>
+<td
+style="text-align: left;">逐點量測時於量測前、中、後重複量測之同一位置，用以判斷量測期間濃度是否改變。</td>
+</tr>
+<tr>
+<td style="text-align: left;">普通克利金法</td>
+<td
+style="text-align: left;">依測點間距離關係推估未量測位置濃度之空間內插方法。本手冊固定採用線性變異函數，斜率
+1、塊金值 0。</td>
+</tr>
+<tr>
+<td style="text-align: left;">留一交叉驗證</td>
+<td
+style="text-align: left;">每次移除一個測點，以其餘測點推估該點濃度，再與實測值比較，用以判斷分布圖之可信程度。</td>
+</tr>
+<tr>
+<td style="text-align: left;">RRMSE</td>
+<td
+style="text-align: left;">相對均方根誤差。留一交叉驗證之均方根誤差除以實測平均值，以百分比表示。</td>
+</tr>
+<tr>
+<td style="text-align: left;">MAPE</td>
+<td
+style="text-align: left;">平均絕對百分誤差。留一交叉驗證中各測點推估誤差占實測值百分比之平均。</td>
+</tr>
+<tr>
+<td style="text-align: left;">熱區</td>
+<td style="text-align: left;">圖面上濃度達「最低值加全距之
+80%」以上之連續區域。</td>
+</tr>
+<tr>
+<td style="text-align: left;">容許濃度</td>
+<td
+style="text-align: left;">法規所定之勞工作業場所容許暴露標準。事業單位亦得自訂較嚴之管理值，本手冊統稱為管理值。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="五本手冊之使用方式">五、本手冊之使用方式</h2>
+<p>本手冊第三章至第九章各自獨立，每章開頭列出適用情形、應備資料及產出。使用者應依手上已有之資料，直接自對應章節開始，不需自第一步依序辦理。</p>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 36%" />
+<col style="width: 39%" />
+<col style="width: 21%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">手上已有之資料</th>
+<th style="text-align: left;">自哪一章開始</th>
+<th style="text-align: left;">對應提示詞<br />
+（附錄一）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">尚未選定工具或尚未安裝 Skill</td>
+<td style="text-align: left;">第二章　製圖工具與 Skill 安裝</td>
+<td style="text-align: left;">提示詞 1　範例</td>
+</tr>
+<tr>
+<td style="text-align: left;">只有平面圖，尚未量測</td>
+<td style="text-align: left;">第三章　佈點規劃</td>
+<td style="text-align: left;">提示詞 2 至 4</td>
+</tr>
+<tr>
+<td style="text-align: left;">已規劃測點，準備進場量測</td>
+<td style="text-align: left;">第四章　現場量測</td>
+<td style="text-align: left;">提示詞 16</td>
+</tr>
+<tr>
+<td style="text-align: left;">多台儀器同時記錄之原始資料</td>
+<td style="text-align: left;">第五章　資料整理（第二節）</td>
+<td style="text-align: left;">提示詞 5</td>
+</tr>
+<tr>
+<td style="text-align: left;">一台儀器逐點量測之原始資料</td>
+<td style="text-align: left;">第五章　資料整理（第三節）</td>
+<td style="text-align: left;">提示詞 6</td>
+</tr>
+<tr>
+<td style="text-align: left;">手寫記錄或格式不一之表格</td>
+<td style="text-align: left;">第五章　資料整理（第四、五節）</td>
+<td style="text-align: left;">提示詞 7、8</td>
+</tr>
+<tr>
+<td style="text-align: left;">已填妥之標準資料表</td>
+<td style="text-align: left;">第六章　資料檢核</td>
+<td style="text-align: left;">提示詞 9、10</td>
+</tr>
+<tr>
+<td style="text-align: left;">已檢核之標準資料表</td>
+<td style="text-align: left;">第七章　製圖</td>
+<td style="text-align: left;">提示詞 11 至 13</td>
+</tr>
+<tr>
+<td style="text-align: left;">已有分布圖判斷可信程度或補點</td>
+<td style="text-align: left;">第八章　圖面驗證與補點</td>
+<td style="text-align: left;">提示詞 14、15</td>
+</tr>
+<tr>
+<td style="text-align: left;">已有分布圖判讀熱區及管理應用</td>
+<td style="text-align: left;">第九章　判讀與管理應用</td>
+<td style="text-align: left;">提示詞 17</td>
+</tr>
+</tbody>
+</table>
+<p>本手冊引用之提示詞彙整於附錄一，提示詞中以<strong>【　】</strong>標示並加網底之文字，為使用者應依實際情形修改之部分。</p>
+<h1 id="第二章-製圖工具與-skill-安裝">第二章　製圖工具與 Skill 安裝</h1>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 79%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">適用情形</th>
+<th style="text-align: center;">首次製作濃度分布圖，安裝本手冊所建置之
+Skill。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">應備資料</td>
+<td style="text-align: center;">大型語言模型帳號（使用 Skill
+者）；<br />
+Skill 安裝檔（exposure-contour.skill 或 .zip）。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="一製圖工具之選擇">一、製圖工具之選擇</h2>
+<p>本計畫提供二種製圖方式，計算方法相同，同一份標準資料表所得之網格濃度差異小於
+10⁻⁶。使用者應依資料安全要求及需要之功能選用。</p>
+<table style="width:98%;">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 34%" />
+<col style="width: 45%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;">項目</th>
+<th style="text-align: center;">Skill<br />
+（配合大型語言模型）</th>
+<th style="text-align: center;">ConcTour 網頁工具</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">適用對象</td>
+<td
+style="text-align: center;">需要協助佈點、整理原始資料、驗證及補點者</td>
+<td
+style="text-align: center;">資料已整理成標準資料表，只需製圖者；資料不得上傳外網者</td>
+</tr>
+<tr>
+<td style="text-align: center;">操作方式</td>
+<td
+style="text-align: center;">以中文對話說明需求，上傳平面圖或資料</td>
+<td style="text-align: center;">瀏覽器開啟網頁，上傳標準資料表</td>
+</tr>
+<tr>
+<td style="text-align: center;">佈點規劃</td>
+<td style="text-align: center;">有</td>
+<td style="text-align: center;">無</td>
+</tr>
+<tr>
+<td style="text-align: center;">原始資料整理</td>
+<td style="text-align: center;">有（逐點、多機等）</td>
+<td style="text-align: center;">無</td>
+</tr>
+<tr>
+<td style="text-align: center;">障礙區遮蓋、管理分區</td>
+<td style="text-align: center;">有</td>
+<td style="text-align: center;">無，須於圖面另行標示</td>
+</tr>
+<tr>
+<td style="text-align: center;">圖面驗證</td>
+<td style="text-align: center;">有，並提出補點位置</td>
+<td style="text-align: center;">無</td>
+</tr>
+<tr>
+<td style="text-align: center;">濃度為 0 之測點</td>
+<td style="text-align: center;">保留，提醒使用者確認</td>
+<td style="text-align: center;">保留</td>
+</tr>
+<tr>
+<td style="text-align: center;">資料傳輸</td>
+<td style="text-align: center;">上傳至大型語言模型服務</td>
+<td style="text-align: center;">運算全部在瀏覽器內完成，可離線使用</td>
+</tr>
+<tr>
+<td style="text-align: center;">費用</td>
+<td style="text-align: center;">依各服務方案</td>
+<td style="text-align: center;">免費、免安裝、免帳號</td>
+</tr>
+</tbody>
+</table>
+<p>資料安全要求不同時，宜依下列原則選用：</p>
+<p>（一）資料不得離開廠區者：使用
+ConcTour，得下載後於內部電腦離線開啟，運算均於瀏覽器內完成，不傳送任何資料。</p>
+<p>（二）資料得上傳雲端，但不宜揭露廠名或製程者：使用 Skill
+或標準提示詞前，將場域名稱改為代號，平面圖去除廠名、製程及設備名稱，僅提供座標與濃度。</p>
+<p>（三）無特別限制者：得直接使用 Skill，由 Skill
+協助佈點至製圖之全部工作。</p>
+<h2 id="二skill-之內容">二、Skill 之內容</h2>
+<p>Skill
+為一組提供大型語言模型依循之作業說明與計算程式。安裝後，使用者於對話中提及濃度分布圖、佈點、標準資料表、補點等內容時，模型即自動載入
+Skill，依本手冊相同之步驟及參數執行，不需記憶指令或說出 Skill
+名稱。Skill
+之工作範圍至熱區、管理值分區及面積計算為止，不代為撰寫管理建議或結果報告。</p>
+<p>Skill 由下列部分組成，使用者不需修改：</p>
+<p>（一）作業說明（SKILL.md 及 references
+資料夾）：各階段之步驟、判定門檻及應告知使用者之事項。</p>
+<p>（二）計算程式（scripts
+資料夾）：佈點、原始資料轉換、資料檢核、克利金製圖、交叉驗證、補點建議及漂移計算。所有計算均由程式執行，模型不得自行撰寫內插程式。</p>
+<p>（三）空白範本（assets 資料夾）：標準資料表 v5.0、點位量測時間表 v1.0
+及儀器點位對應表 v1.0。</p>
+<h2 id="三安裝-skill">三、安裝 Skill</h2>
+<p>Skill
+只需安裝一次，之後每個新對話均可使用。各工具之選單名稱可能隨版本調整，本節依中華民國
+115 年 11
+月各工具之官方說明撰寫，畫面與本節不同時，應以各工具最新之說明為準。Skill
+須在可執行程式碼之環境中運作，安裝前應確認帳號方案支援技能（Skills）及程式碼執行功能。</p>
+<p>Skill 於github公開之倉庫網址：<a
+href="https://github.com/jamc0406/exposure-contour"
+class="uri">https://github.com/jamc0406/exposure-contour</a></p>
+<p>最新版下載地址：<a
+href="https://github.com/jamc0406/exposure-contour/releases/latest/download/exposure-contour.zip"
+class="uri">https://github.com/jamc0406/exposure-contour/releases/latest/download/exposure-contour.zip</a></p>
+<h3 id="一claude-網頁版及桌面版">（一）Claude 網頁版及桌面版</h3>
+<p>1. 開啟左側「自訂」→「技能」，按「＋」，選擇「上傳技能」。</p>
+<p>2. 選擇 Skill 安裝檔（.zip 檔；本計畫提供之 .skill
+檔亦屬壓縮檔，無法上傳時改用 .zip
+檔），上傳完成後確認該技能之開關為開啟狀態。</p>
+<h3 id="二chatgpt">（二）ChatGPT</h3>
+<p>1. 於左側選單點選「外掛程式」，進入後選擇「技能」分頁。</p>
+<p>2. 點選「新增」→「從電腦上傳」，選擇 Skill 安裝檔（.zip）。</p>
+<p>3. ChatGPT 會先掃描上傳之內容，通過後即可使用；標示為「Needs
+Review」者須待審查。</p>
+<p>4. 桌面版與網頁版之技能不互相同步，須分別上傳。</p>
+<h3 id="三gemini">（三）Gemini</h3>
+<p>1. 於左側選單點選「自訂」，進入後選擇「技能」分頁。</p>
+<p>2. 點選「建立」→「上傳」，選擇 Skill 安裝檔（.zip）。</p>
+<h3 id="四其他支援技能之工具">（四）其他支援技能之工具</h3>
+<p>Codex、Cursor 等支援技能（Agent
+Skills）格式之程式開發工具，得依各工具之說明安裝。</p>
+<h2 id="四安裝後之驗證">四、安裝後之驗證</h2>
+<p>Skill 安裝後，可於LLM
+skill頁面確認是否有安裝完成，也可以下述方式確認模型確實依 Skill
+之程式執行，而非自行撰寫計算方法。驗證步驟如下：</p>
+<p>開啟新對話，輸入提示詞 1
+，確認模型回覆之流程包含佈點、資料整理、檢核、製圖、驗證及補點等階段，且以繁體中文回覆。</p>
+<p>提示詞 1</p>
+<p>你有沒有製作作業場所濃度分布圖的技能？告訴我技能名稱，並用繁體中文說明它分成哪些步驟、每一步需要我提供什麼資料。</p>
+<h1 id="第三章-佈點規劃">第三章　佈點規劃</h1>
+<table style="width:98%;">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 86%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">適用情形</th>
+<th
+style="text-align: center;">已取得作業場所平面圖，尚未量測，需決定測點數量、位置及量測方式。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">應備資料</td>
+<td style="text-align: center;">俯視平面圖（PDF、PNG 或 JPG）<br />
+場域實際長、寬<br />
+污染物名稱及單位<br />
+可能逸散位置（選用）</td>
+</tr>
+<tr>
+<td style="text-align: left;">產出</td>
+<td
+style="text-align: center;">佈點圖；預填座標並附佈點圖之標準資料表；點位量測時間表或儀器點位對應表；必要時之現場記錄表。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="一以-skill-辦理佈點規劃">一、以 Skill 辦理佈點規劃</h2>
+<p>（一）上傳平面圖，輸入提示詞
+2，說明場域尺寸、原點、污染物及單位。</p>
+<p>提示詞 2　範例</p>
+<p>這是<strong>【烘乾區】</strong>的平面圖，實際大小是 X
+方向<strong>【30】</strong>公尺、Y
+方向<strong>【26】</strong>公尺，左下角為原點。我要量<strong>【苯】</strong>，單位<strong>【ppm】</strong>。請先判斷平面圖上哪些地方不能站（設備、樓梯等），給我確認，也告訴我你刻意沒有標的東西，再問我可能逸散的位置。</p>
+<p>（二）Skill
+會於平面圖上判斷障礙區，說明判斷理由及未標示之項目，並詢問可能逸散位置。使用者應逐項確認、修正或補充，得直接於平面圖上圈選逸散位置後回傳。確認時使用提示詞
+3。</p>
+<p>提示詞 3　範例</p>
+<p>障礙區這樣可以，但<strong>【烘乾機 C 出口端站】</strong>實際只到
+X<strong>【26】</strong>公尺；<strong>【左上角的風扇是吊在天花板上】</strong>，不用排除。可能逸散的位置是<strong>【烘乾機
+A
+入口】</strong>和<strong>【換桶區】</strong>，我在圖上圈起來了。請依此佈點，先給我佈點圖確認。</p>
+<p>（三）Skill
+依障礙區及逸散位置計算測點數並佈點，提供佈點圖供確認。確認後輸入提示詞
+4，取得標準資料表（已嵌入佈點圖），並依量測方式取得點位量測時間表或儀器點位對應表。</p>
+<p>提示詞 4　範例</p>
+<p>佈點可以。請給我已填好座標並附佈點圖的標準資料表，另外我會用<strong>【一台儀器逐點量測／多台儀器同時量測】</strong>，請一併給我<strong>【點位量測時間表／儀器點位對應表】</strong>。每點停留<strong>【1】</strong>分鐘。</p>
+<h2
+id="二平面圖及場域資訊取得注意事項">二、平面圖及場域資訊取得注意事項</h2>
+<p>（一）量測區域之俯視平面圖可為jpeg、png、pdf等格式。CAD 圖應另存為
+PDF；透視圖、立體示意圖及無比例之手繪圖無法對位，不得使用。</p>
+<p>（二）確認場域之實際長度（X 方向）及寬度（Y
+方向），單位為公尺。無法確認時，得以圖上一段已知長度（如柱距）作為比例依據。</p>
+<p>（三）座標原點一律訂於場域圖面左下角，X 軸向右、Y
+軸向上。現場人員應確認平面圖之方向與現場一致，避免量測時方向相反。</p>
+<p>（四）平面圖之 X、Y 比例差異超過 3%
+時，表示圖面未依比例繪製或框選範圍有誤，應先釐清。Skill確認圖面本身未依比例者，會以提供之X、Y
+對平面圖進行調整，座標以實際尺寸為準，背景圖可能略有變形。</p>
+<h2 id="三標示障礙區">三、標示障礙區</h2>
+<p>Skill
+會根據圖面判斷可能障礙區，並以灰色網格覆蓋，主要依據如下，使用者亦可自行標示，增加準確度。</p>
+<p>（一）於平面圖上標示無法站立量測之區域，包括：</p>
+<p>1. 樓梯、電梯井、地坑。</p>
+<p>2. 設備本體及其基座，如烘乾機、槽體、馬達、捲料架、電氣箱。</p>
+<p>3. 設備前後端之附屬工作站。</p>
+<p>4. 地面軌道、輸送帶、溝槽、基礎。</p>
+<p>5. 牆、隔間、儲架。</p>
+<p>6. 人員無法進入之狹窄間隙，如設備與軌道之間。</p>
+<p>（二）下列項目通常不列為障礙區：以斜視方式繪製之架空風管或排氣管、懸吊於天花板之風扇或送風機、尺寸線及標註線、柱線。無法判斷為落地或懸吊者，應至現場確認。</p>
+<p>（三）障礙區以矩形或多邊形記錄其 X、Y
+範圍（公尺），並以中文命名，名稱將顯示於圖面。</p>
+<h2 id="四判斷可能逸散位置">四、判斷可能逸散位置</h2>
+<p>量測前應依製程資訊判斷可能逸散之位置，於適當處增設測點。常見位置分為四類：</p>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 77%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">類別</th>
+<th style="text-align: left;">常見位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">設備接口</td>
+<td style="text-align: left;">法蘭、閥件、取樣口、加料口、泵浦軸封</td>
+</tr>
+<tr>
+<td style="text-align: left;">開放液面</td>
+<td style="text-align: left;">槽體、浸泡槽、塗布頭、溶劑桶、廢液桶</td>
+</tr>
+<tr>
+<td style="text-align: left;">人員操作點</td>
+<td style="text-align: left;">調配、清洗、換桶、出料、裝填</td>
+</tr>
+<tr>
+<td style="text-align: left;">通風不良處</td>
+<td
+style="text-align: left;">角落、設備後方、門後、局部排氣未涵蓋處</td>
+</tr>
+</tbody>
+</table>
+<p>逸散位置不需逐一設點。已有方格測點鄰近者，或逸散量較小者，得由方格測點涵蓋，或留待第二輪補點。尚無法判斷逸散位置時，得先以方格佈點，再依第一輪結果之熱區補點。</p>
+<h2 id="五決定測點數量">五、決定測點數量</h2>
+<p>Skill初步測點數取下列兩者之較大值，小數無條件進位：</p>
+<p>（一）場域面積 ÷（0.15 × 場域對角線長度）²</p>
+<p>（二）場域面積 ÷ 100</p>
+<p>第一項使正規化測點間距不超過對角線之 0.15 倍，第二項使測點間距不超過
+10 公尺。兩項於對角線約 66.7 公尺（面積約 2,000
+平方公尺）處交會。常見場域尺寸之初步測點數如下表。第一輪測點係用於找出熱區，因障礙區刪除測點致總數低於上表者，宜於他處補足。</p>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 22%" />
+<col style="width: 15%" />
+<col style="width: 25%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">場域（公尺）</th>
+<th style="text-align: left;">面積（平方公尺）</th>
+<th style="text-align: left;">初步測點數</th>
+<th style="text-align: left;">測點間距約（公尺）</th>
+<th style="text-align: left;">決定項目</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">20 × 10</td>
+<td style="text-align: left;">200</td>
+<td style="text-align: left;">18</td>
+<td style="text-align: left;">3.3</td>
+<td style="text-align: left;">正規化間距</td>
+</tr>
+<tr>
+<td style="text-align: left;">20 × 20</td>
+<td style="text-align: left;">400</td>
+<td style="text-align: left;">23</td>
+<td style="text-align: left;">4.2</td>
+<td style="text-align: left;">正規化間距</td>
+</tr>
+<tr>
+<td style="text-align: left;">30 × 20</td>
+<td style="text-align: left;">600</td>
+<td style="text-align: left;">21</td>
+<td style="text-align: left;">5.3</td>
+<td style="text-align: left;">正規化間距</td>
+</tr>
+<tr>
+<td style="text-align: left;">40 × 25</td>
+<td style="text-align: left;">1,000</td>
+<td style="text-align: left;">20</td>
+<td style="text-align: left;">7.1</td>
+<td style="text-align: left;">正規化間距</td>
+</tr>
+<tr>
+<td style="text-align: left;">50 × 40</td>
+<td style="text-align: left;">2,000</td>
+<td style="text-align: left;">22</td>
+<td style="text-align: left;">9.5</td>
+<td style="text-align: left;">正規化間距</td>
+</tr>
+<tr>
+<td style="text-align: left;">60 × 40</td>
+<td style="text-align: left;">2,400</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">10.0</td>
+<td style="text-align: left;">10 公尺上限</td>
+</tr>
+<tr>
+<td style="text-align: left;">80 × 50</td>
+<td style="text-align: left;">4,000</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">10.0</td>
+<td style="text-align: left;">10 公尺上限</td>
+</tr>
+</tbody>
+</table>
+<h2 id="六決定測點位置">六、決定測點位置</h2>
+<p>（一）測點以方格方式平均分布，位於方格中心。</p>
+<p>（二）每一測點距障礙區邊緣至少 0.5 公尺。測點落於障礙區或其 0.5
+公尺範圍內者，移至半個間距內最近之可站立位置；無法移出者刪除，並記錄刪除之測點。狹窄間隙內之測點無法同時距兩側
+0.5 公尺，應刪除。</p>
+<p>（三）測點座標記至小數點後一位（0.1
+公尺），以利現場以步測或捲尺定位。</p>
+<p>（四）測點編號自左下角開始，依 Y
+方向由下往上分列，同一列由左至右，依序編為
+P01、P02……。測點移位後，同一列之編號順序可能改變，交付現場人員時應說明編號方向。</p>
+<p>（五）量測高度原則為 1.5 公尺（呼吸帶高度），例外者應於備註註明。</p>
+<h2 id="七選擇量測方式及記錄表">七、選擇量測方式及記錄表</h2>
+<p>量測方式應於量測前決定，因記錄方式及資料整理方法不同。</p>
+<table style="width:98%;">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 44%" />
+<col style="width: 44%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;">項目</th>
+<th style="text-align: center;">一台儀器逐點量測</th>
+<th style="text-align: center;">多台儀器同時量測</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">做法</td>
+<td style="text-align: center;">人員攜帶一台儀器，<br />
+依序至各測點停留量測</td>
+<td style="text-align: center;">每一測點各放一台儀器，<br />
+同時連續記錄</td>
+</tr>
+<tr>
+<td style="text-align: center;">應備記錄表</td>
+<td style="text-align: center;">點位量測時間表</td>
+<td style="text-align: center;">儀器點位對應表</td>
+</tr>
+<tr>
+<td style="text-align: center;">原始資料</td>
+<td style="text-align: center;">儀器連續記錄<br />
+＋各點開始及結束時間</td>
+<td style="text-align: center;">一份時序記錄，每台儀器一欄</td>
+</tr>
+<tr>
+<td style="text-align: center;">主要誤差來源</td>
+<td
+style="text-align: center;">各點量測時間不同、人員走動擾動、儀器反應時間</td>
+<td style="text-align: center;">儀器間讀值差異、背景濃度</td>
+</tr>
+<tr>
+<td style="text-align: center;">必要品質措施</td>
+<td
+style="text-align: center;">設固定參考點，於量測前、中、後各量一次；每點捨去剛到達之讀值</td>
+<td
+style="text-align: center;">量測前全部儀器置於同一處平行比對讀值，確認儀器濃度可比較。</td>
+</tr>
+</tbody>
+</table>
+<h1 id="第四章-現場量測">第四章　現場量測</h1>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 79%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">適用情形</th>
+<th style="text-align: center;">已完成佈點，準備進場量測。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">應備資料</td>
+<td style="text-align: center;">標準資料表（含佈點圖）<br />
+點位量測時間表或儀器點位對應表<br />
+已校正之儀器。</td>
+</tr>
+<tr>
+<td style="text-align: left;">產出</td>
+<td style="text-align: center;">儀器原始記錄<br />
+填妥之點位量測時間表或儀器點位對應表<br />
+固定參考點讀值</td>
+</tr>
+</tbody>
+</table>
+<h2 id="一共同事項">一、共同事項</h2>
+<p>（一）量測前確認儀器已校正，並記錄儀器型號、偵測極限及記錄間隔。</p>
+<p>（二）將儀器時鐘與記錄用之手錶或手機對準。時鐘不一致時，事後無法依時間切出各測點之讀值。</p>
+<p>（三）量測期間有換桶、清洗、開關門等臨時作業者，應記錄時間及位置。</p>
+<p>（四）量測期間作業狀態應維持一致。作業狀態改變時，應分開記錄，必要時分別製圖。</p>
+<h2 id="二一台儀器逐點量測">二、一台儀器逐點量測</h2>
+<p>（一）開始量測前，先至固定參考點量測一次。</p>
+<p>（二）依編號順序走訪各測點，宜以來回方式進行，避免一路由低濃度區往高濃度區單向前進。</p>
+<p>（三）每點停留時間應一致，於點位量測時間表填寫每點之開始時間，及結束時間或量測時長（兩者擇一，均填寫時以結束時間為準）。時間格式得寫為
+hh:mm:ss 或 YYYY-MM-DD hh:mm:ss。</p>
+<p>（四）儀器到達測點後需反應時間，應停留足夠反應時間，該段讀值宜於整理時捨去，捨去秒數應於量測前決定並記錄。</p>
+<p>（五）量測進行至一半及全部結束時，各回到固定參考點量測一次，並依第八章第五節判斷漂移。</p>
+<p>（六）可請 Skill 提供點位量測時間表，如提示詞 4。</p>
+<h2 id="三多台儀器同時量測">三、多台儀器同時量測</h2>
+<p>（一）量測前將全部儀器置於同一處，同時記錄數分鐘，比對儀器間讀值差異。</p>
+<p>（二）依儀器點位對應表放置儀器。儀器編號須與儀器記錄檔之欄位名稱完全相同，儀器編號與測點編號通常不同，不得假設兩者順序一致。</p>
+<p>（三）儀器放置後應連續記錄至濃度穩定，記錄長度宜達 30
+分鐘以上，以利判斷穩定起點。</p>
+<p>（四）設置室外或背景測點者，於對應表備註註明。是否扣除背景，應依實際需要決定，並記錄於標準資料表備註。</p>
+<p>（五）儀器故障或未記錄者，該測點於對應表備註註明原因。</p>
+<p>（六）可請 Skill 提供儀器點位對應表，如提示詞 4。</p>
+<h1 id="第五章-資料整理">第五章　資料整理</h1>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 79%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">適用情形</th>
+<th
+style="text-align: center;">已有量測原始資料，需整理成標準資料表。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">應備資料</td>
+<td style="text-align: center;">儀器原始記錄<br />
+點位量測時間表或儀器點位對應表<br />
+測點座標（佈點時之標準資料表或座標清單）</td>
+</tr>
+<tr>
+<td style="text-align: left;">產出</td>
+<td style="text-align: center;">標準資料表，每一測點一個代表濃度。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="一標準資料表格式及填寫規則">一、標準資料表格式及填寫規則</h2>
+<p>標準資料表為單一工作表「基本資料與量測濃度」。第 1
+列為英文欄位代碼，供程式讀取，不得修改；第 2
+列為中文欄名，得修改。填寫時應遵守下列規則：</p>
+<p>（一）一份標準資料表只記錄一種污染物。濃度欄 c1、c2、c3
+為同一污染物之重複量測紀錄，不是三種污染物。</p>
+<p>（二）未量測之測點，濃度欄留空，並於備註寫明原因，不得填
+0、N/A、ND、「—」或「無」。0 代表儀器確實讀到
+0，會拉低周圍之推估濃度。</p>
+<p>（三）對低於偵測極限者，濃度欄可留空，備註寫「&lt;LOD」，並於基本資料填入偵測極限（c_LOD）。製圖時以偵測極限除以根號
+2
+代入；此類測點超過全部測點三分之一時，低濃度區之形狀主要由代入值決定，應謹慎判讀。</p>
+<p>（四）濃度欄只填數字，不加單位、千分位逗號或符號。</p>
+<p>（五）不合併儲存格，不插入空白列或小計列。</p>
+<h2 id="二多台儀器同時量測之資料">二、多台儀器同時量測之資料</h2>
+<h3 id="一以-skill-辦理">（一）以 Skill 辦理</h3>
+<p>1. 上傳儀器匯出之原始記錄（第 1
+欄為時間，其餘每台儀器一欄）及儀器點位對應表，輸入提示詞 5。</p>
+<p>提示詞 5　範例</p>
+<p>這是多台感測器同時記錄的<strong>【苯】</strong>資料，每<strong>【10】</strong>秒記一筆，感測器對應的點位編號在附檔的儀器點位對應表。請先幫我看濃度什麼時候開始穩定，用穩定後的平均當作各點濃度，整理成標準資料表。<strong>【（有背景測點時）S-27
+是室外背景，不要扣除，只列出來給我看。】</strong>有問題先告訴我。</p>
+<p>2. Skill
+會回覆濃度開始穩定之時間（穩定起點）、判定之理由，以及前一分鐘為何尚未穩定（例如某台儀器仍在下降）。使用者應對照現場紀錄確認該時段無臨時作業；如需改用其他時段，得直接告知
+Skill，例如「改用 09:10 到 09:30 的平均」。</p>
+<p>3. 確認後，Skill
+提供標準資料表，備註欄已寫明代表濃度之取得方式及平均時段。</p>
+<p>4. Skill
+回報對應表有列、記錄檔卻沒有該欄之儀器時，表示該儀器未記錄，對應測點會留空；記錄檔有欄位、對應表未列者，則不納入。使用者應確認是否為儀器故障或對應表漏填。</p>
+<h3 id="二代表濃度之取得方式">（二）代表濃度之取得方式</h3>
+<p>1. 各測點之代表濃度，取「穩定起點」至記錄結束之平均值。</p>
+<p>2.
+穩定之判斷原則為：全部儀器之平均值已無明顯上升或下降、平均時段開頭沒有落在濃度變化之斜坡上，且沒有任何一台儀器仍有明顯趨勢。</p>
+<p>3. 整段記錄均未達穩定時，Skill
+會改取最後時段之平均，並於備註註明「未達穩定」。</p>
+<p>4. 是否扣除背景濃度，應依實際需要決定，並記錄於標準資料表備註。</p>
+<h2 id="三一台儀器逐點量測之資料">三、一台儀器逐點量測之資料</h2>
+<h3 id="一以-skill-辦理-1">（一）以 Skill 辦理</h3>
+<p>1. 上傳儀器匯出之連續記錄及填妥之點位量測時間表，輸入提示詞
+6，並說明每點剛到達時要捨去幾秒之讀值。</p>
+<p>提示詞 6　範例</p>
+<p>現場濃度是用同一台<strong>【PID】</strong>逐點量的，儀器每<strong>【10】</strong>秒記一筆，各點的開始時間和量測時長寫在點位量測時間表裡。每個點剛到的前<strong>【20】</strong>秒讀值還不穩，請不要算進去，其餘取平均，整理成標準資料表。有問題先告訴我。</p>
+<p>2. Skill
+會回覆記錄筆數、每點採用之時段及捨去秒數，並列出下列需確認之情形：</p>
+<blockquote>
+<p>（1）某點之平均時段超過下一點之開始時間，通常為量測時長填寫過長。</p>
+<p>（2）某點讀值筆數少於預期。</p>
+<p>（3）儀器記錄未涵蓋時間表之時段，通常為儀器時鐘或日期與手錶不一致。</p>
+</blockquote>
+<p>3. 使用者確認或更正時間表後，Skill
+提供標準資料表，備註欄已寫明代表濃度之取得方式。</p>
+<h3 id="二代表濃度之取得方式-1">（二）代表濃度之取得方式</h3>
+<p>1.
+各測點之代表濃度，取該點開始時間至結束時間（或開始時間加量測時長）內讀值之平均，測點間移動時之讀值不納入。</p>
+<p>2.
+每點剛到達時之讀值受儀器反應時間影響，得捨去，捨去秒數依量測前之決定，並記錄於備註。</p>
+<p>3.
+未記錄各點時間，亦無固定之停留及移動時間者，無法判斷讀值屬於哪一測點，Skill
+不會自行推測，會請使用者提供時間資料。</p>
+<h2 id="四手寫記錄或格式不一之表格">四、手寫記錄或格式不一之表格</h2>
+<h3 id="一以-skill-辦理-2">（一）以 Skill 辦理</h3>
+<p>1. 上傳原始檔案，不需先行整理，輸入提示詞
+7，說明表格之排列方式及方向。</p>
+<p>提示詞 7　範例</p>
+<p>這是現場手寫後打成 Excel
+的<strong>【苯】</strong>記錄，排成格子狀，最上面一列是 X
+位置，最左邊一欄是 Y
+位置，<strong>【第一列是靠北邊（圖的上方）】</strong>。請整理成標準資料表：數字後面的單位拿掉，空白或寫「未測」的格子留空並在備註寫原因。整理完先給我看座標方向對不對。</p>
+<p>2. Skill 整理後會列出座標與濃度供核對。使用者應逐點確認方向，特別是 Y
+方向：手寫記錄常將第一列寫在北側（圖面上方），與標準資料表之原點（左下角）相反。</p>
+<h3 id="二注意事項">（二）注意事項</h3>
+<p>1. 常見問題為合併儲存格、數值內含單位（如「12.5
+ppm」）及小計列，Skill 會逐一轉為標準格式，並將單位填入基本資料。</p>
+<p>2. 他人提供之資料，應先確認資料品質、單位，並告知 Skill
+記錄於備註。</p>
+<h2 id="五只有測點編號而無座標">五、只有測點編號而無座標</h2>
+<h3 id="一以-skill-辦理-3">（一）以 Skill 辦理</h3>
+<p>1. 上傳當時之佈點示意圖或平面圖，及測點編號與讀值，輸入提示詞
+8，說明場域尺寸及編號方向。</p>
+<p>提示詞 8　範例</p>
+<p>我只有測點編號<strong>【P01 到
+P20】</strong>和讀值，沒有座標，附上當時的佈點示意圖。場域是
+X<strong>【24】</strong>公尺、Y<strong>【14】</strong>公尺，編號從<strong>【左下角】</strong>開始、<strong>【先往右】</strong>排。請在圖上讀出每個點的座標，列表給我核對，確認後再整理成標準資料表。</p>
+<p>2. Skill
+會將示意圖對位後讀出各點座標並列表。使用者應逐點核對，確認無誤後再請
+Skill 整理成標準資料表。</p>
+<h3 id="二注意事項-1">（二）注意事項</h3>
+<p>1. 沒有座標不能製圖。Skill
+不會假設測點為等距排列，無示意圖或平面圖時，會請使用者提供。</p>
+<p>2.
+編號方向（起始角落、先往右或先往上）應確認清楚。已知逸散源者，熱區應位於逸散源附近；熱區遠離逸散源時，常為編號方向相反。</p>
+<h2 id="六重複量測">六、重複量測</h2>
+<p>（一）只量測一次者，只填 c1。</p>
+<p>（二）量測多次者，依時間順序填入 c1、c2、c3，並於第 2
+列中文欄名註明日期或時間（如「量測1_1111」）。製圖預設取平均；需要時得請
+Skill 改取單次或最大值（保守估計）。</p>
+<p>（三）超過三次者，可自行向右增加欄位，並告知 Skill
+濃度計算原則，並於備註說明。連續感測器記錄不等於三次重複量測，應依本章第二節取穩定後平均。</p>
+<h1 id="第六章-資料檢核">第六章　資料檢核</h1>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 79%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">適用情形</th>
+<th
+style="text-align: center;">已有標準資料表，製圖前需確認資料無誤。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">應備資料</td>
+<td style="text-align: center;">標準資料表<br />
+平面圖或佈點時確認之障礙區（有者）</td>
+</tr>
+<tr>
+<td style="text-align: left;">產出</td>
+<td style="text-align: center;">須修正事項清單<br />
+0 值、可疑高值及位於障礙區內測點之確認結果</td>
+</tr>
+</tbody>
+</table>
+<h2 id="一以-skill-辦理資料檢核">一、以 Skill 辦理資料檢核</h2>
+<p>（一）上傳標準資料表，有平面圖者一併上傳，輸入提示詞 9。</p>
+<p>提示詞 9　範例</p>
+<p>請先檢查這份標準資料表，有需要修正的地方告訴我，濃度是 0
+的點、特別高的點和落在設備裡的點也列出來，我確認後再畫圖。</p>
+<p>（二）Skill 會分三類回覆：須修正之項目、需使用者確認之項目（0
+值、可疑高值、位於障礙區內之測點），以及檢核通過之項目。須修正之項目應先修正，Skill
+可直接協助修改並提供修正後之資料表。</p>
+<p>（三）全部項目確認後，即可依第七章製圖。</p>
+<h2 id="二檢核項目">二、檢核項目</h2>
+<p>Skill 會逐項檢核下表。列為「須修正」者，應修正後才可製圖。</p>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 52%" />
+<col style="width: 24%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">檢核項目</th>
+<th style="text-align: left;">處理方式</th>
+<th style="text-align: left;">等級</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">濃度欄有文字</td>
+<td style="text-align: left;">改為數字，或依填寫規則留空</td>
+<td style="text-align: left;">須修正</td>
+</tr>
+<tr>
+<td style="text-align: left;">濃度為負值</td>
+<td style="text-align: left;">查校正紀錄；無法更正者視為未量測</td>
+<td style="text-align: left;">須修正</td>
+</tr>
+<tr>
+<td style="text-align: left;">濃度為 0</td>
+<td style="text-align: left;">逐點確認為真實讀值或未量測；預設保留</td>
+<td style="text-align: left;">提醒</td>
+</tr>
+<tr>
+<td style="text-align: left;">座標超出場域</td>
+<td style="text-align: left;">確認場域尺寸及座標</td>
+<td style="text-align: left;">須修正</td>
+</tr>
+<tr>
+<td style="text-align: left;">測點編號重複</td>
+<td style="text-align: left;">更正編號</td>
+<td style="text-align: left;">須修正</td>
+</tr>
+<tr>
+<td style="text-align: left;">備註為「&lt;LOD」</td>
+<td style="text-align: left;">以偵測極限 ÷ √2
+代入；未填偵測極限者須補填</td>
+<td style="text-align: left;">缺偵測極限時須修正</td>
+</tr>
+<tr>
+<td style="text-align: left;">濃度留空</td>
+<td style="text-align: left;">不納入計算；未寫明原因者須補註</td>
+<td style="text-align: left;">無原因時須修正</td>
+</tr>
+</tbody>
+</table>
+<p>此外，Skill 會檢視有效測點是否至少 4
+點、是否有重複座標、測點涵蓋場域之範圍，以及測點是否位於障礙區內。對可直接修正之欄位，Skill
+會直接修正，例如單位在濃度欄位內，但不會修改任何濃度值及座標，除非使用者告知。</p>
+<h2 id="三可疑高值之判斷">三、可疑高值之判斷</h2>
+<p>（一）濃度明顯高於其他測點者（大於第三四分位數加 3
+倍四分位距），Skill
+會列為可疑高值，但不會自動刪除。作業場所之高值常為欲找出之熱點。</p>
+<p>（二）使用者應依下列四點判斷，並將判斷結果告知 Skill（如提示詞
+10）：</p>
+<p>1. 是否鄰近已知逸散源。</p>
+<p>2. 重複量測是否仍偏高。</p>
+<p>3. 鄰近測點是否亦偏高。</p>
+<p>4. 量測時是否有臨時作業。</p>
+<p>（三）相鄰數點均偏高者，應視為熱區。僅單一點異常偏高者，宜回現場確認或重測，並於該點附近補點。</p>
+<p>（四）確定為異常而排除者，應告知 Skill
+排除理由，理由會記錄於製圖參數紀錄中。需要比較時，得另畫一張排除該點之圖，正式之圖仍保留。</p>
+<h2 id="四位於障礙區內之測點">四、位於障礙區內之測點</h2>
+<p>測點座標落在障礙區內者，製圖時會被斜線遮蓋。Skill
+不會自行移動測點，會請使用者確認屬下列何種情形：</p>
+<p>（一）座標記錄錯誤：更正座標。</p>
+<p>（二）儀器置於設備或平台上：保留，並於備註註明。</p>
+<p>（三）障礙區繪製範圍大於實際：提供實際尺寸，由 Skill
+修正障礙區範圍；僅知較小而無實際尺寸者，Skill
+只調整含測點之邊緣，並註明為估計。</p>
+<h1 id="第七章-製圖">第七章　製圖</h1>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 83%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">適用情形</th>
+<th
+style="text-align: center;">已有檢核完成之標準資料表，需繪製濃度分布圖。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">應備資料</td>
+<td style="text-align: center;">標準資料表<br />
+平面圖及障礙區（疊圖時）<br />
+容許濃度或管理值（需畫管理值線時）</td>
+</tr>
+<tr>
+<td style="text-align: left;">產出</td>
+<td
+style="text-align: center;">濃度分布圖、網格數值檔、補點建議圖、管理值分區圖（有管理值時）、參數紀錄檔</td>
+</tr>
+</tbody>
+</table>
+<h2 id="一以-skill-製圖">一、以 Skill 製圖</h2>
+<p>（一）上傳標準資料表，需疊圖者一併上傳平面圖，輸入提示詞
+11。已於同一對話完成佈點者，Skill 會沿用當時之平面圖及障礙區。</p>
+<p>提示詞 11　範例</p>
+<p>用預設的方式畫濃度分布圖，疊在平面圖上，<strong>【烘乾機
+A、B、C】</strong>的位置用斜線遮起來，圖上標出每個點的濃度。</p>
+<p>（二）有容許濃度或自訂管理值者，輸入提示詞
+12，圖上會以粗紅線標示該濃度，並依管理值分區（詳第九章）。</p>
+<p>提示詞 12　範例</p>
+<p>我們的管理值是<strong>【0.8】【ppm】</strong>，請在圖上畫出這條紅線，依這個值分區，告訴我超過管理值的面積、比例和測點數。</p>
+<p>（三）需要其他色階者（如黑白列印或管理簡報），輸入提示詞 13，Skill
+會提供五種色階之範例供選擇；未要求時採用 Jet 色階。</p>
+<p>提示詞 13　範例</p>
+<p>先給我看幾種色階的範例，我再選。</p>
+<p>（四）圖面需調整時，得直接以口語說明，例如「分布圖淡一點，讓底下的平面圖看得清楚」、「點的數字大一點」、「標題改成<strong>【A
+廠塗布區　苯】</strong>」。</p>
+<p>（五）Skill
+製圖後會一併回報圖面驗證結果（詳第八章）及熱區位置（詳第九章），並提供下列檔案：</p>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 71%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">檔案</th>
+<th style="text-align: left;">內容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">場域_分佈圖.png</td>
+<td style="text-align: left;">濃度分布圖，可直接放入報告</td>
+</tr>
+<tr>
+<td style="text-align: left;">場域_網格.csv</td>
+<td style="text-align: left;">每一網格之 X、Y
+座標、推估濃度及是否位於障礙區</td>
+</tr>
+<tr>
+<td style="text-align: left;">場域_補點建議.png</td>
+<td
+style="text-align: left;">建議補點位置（藍色圓點為原有測點，紅色菱形為建議補點）</td>
+</tr>
+<tr>
+<td style="text-align: left;">場域_OEL分區.png</td>
+<td style="text-align: left;">依管理值分區之圖（提供管理值時）</td>
+</tr>
+<tr>
+<td style="text-align: left;">場域_results.json</td>
+<td
+style="text-align: left;">全部參數及結果，配合標準資料表可重現同一張圖</td>
+</tr>
+</tbody>
+</table>
+<h2 id="二計算方法及預設值">二、計算方法及預設值</h2>
+<p>Skill 與 ConcTour
+採用相同之計算方法及參數，使用者不需選擇，同一份標準資料表在兩種工具所得之結果一致。預設值如下表。</p>
+<table style="width:98%;">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 25%" />
+<col style="width: 61%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">項目</th>
+<th style="text-align: left;">設定</th>
+<th style="text-align: left;">說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">內插方法</td>
+<td style="text-align: left;">普通克利金法</td>
+<td
+style="text-align: left;">期中報告比較雲形曲線、反距離權重、通用克利金後選定</td>
+</tr>
+<tr>
+<td style="text-align: left;">變異函數</td>
+<td style="text-align: left;">線性，斜率 1，塊金值 0</td>
+<td
+style="text-align: left;">不需由資料估計參數，測點少時仍可穩定計算；曲面通過各測點，不削減峰值</td>
+</tr>
+<tr>
+<td style="text-align: left;">網格範圍</td>
+<td style="text-align: left;">整個場域</td>
+<td style="text-align: left;">不只取測點外接範圍</td>
+</tr>
+<tr>
+<td style="text-align: left;">網格密度</td>
+<td style="text-align: left;">長邊 120 格，短邊依長寬比例</td>
+<td style="text-align: left;">與 ConcTour 相同</td>
+</tr>
+<tr>
+<td style="text-align: left;">負值處理</td>
+<td style="text-align: left;">低於 0 者以 0 計</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">色階</td>
+<td style="text-align: left;">Jet（藍→青→黃→紅）</td>
+<td style="text-align: left;">得依需要改用其他色階</td>
+</tr>
+<tr>
+<td style="text-align: left;">外插區</td>
+<td style="text-align: left;">不另行標示</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<p>部分軟體會自動擬合變異函數，在測點密集處可能出現推估值失控之情形，且使用者不易察覺；經研究比較，其他內插方式及參數並未提供更好之準確度，故正式製圖應維持上表設定。</p>
+<h2 id="三以-conctour-製圖">三、以 ConcTour 製圖</h2>
+<p>資料不得上傳外網雲端，或只需製圖者，得使用
+ConcTour。操作步驟如下：</p>
+<p>（一）以瀏覽器開啟
+ConcTour（https://jamc0406.github.io/ConcTour/）。首次開啟需下載運算環境，約
+15 至 30 秒，右上角圓點轉為綠色即可使用。</p>
+<p>（二）上傳標準資料表，系統自動帶入場域尺寸、污染物名稱、單位及全部測點；亦得上傳
+X、Y、濃度三欄之 CSV 檔，或於表格直接輸入。</p>
+<p>（三）檢視資料檢核結果，負值及超出場域之測點會以淡黃底標示並排除，可疑高值以
+⚠ 標示並預設納入。</p>
+<p>（四）設定濃度單位及管理值（選填），圖上以紅線標示。</p>
+<p>（五）上傳平面圖（選填）後，點選「調整位置與大小」，拖曳藍框使平面圖與場域邊界對齊，再點選一次完成。</p>
+<p>（六）設定標題、色階、是否顯示各點濃度、字體及測點大小，點選「產生分佈圖」，下載圖檔（PNG）及網格數值檔（CSV）。</p>
+<p>（七）ConcTour
+不提供障礙區遮蓋及管理分區功能，設備等區域應於圖面另行以斜線或網底標示為不可判讀區。</p>
+<h1 id="第八章-圖面驗證與補點">第八章　圖面驗證與補點</h1>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 79%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">適用情形</th>
+<th
+style="text-align: center;">已完成第一輪製圖，需判斷圖面可信程度，或決定是否補點。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">應備資料</td>
+<td style="text-align: center;">標準資料表<br />
+平面圖及障礙區（需補點位置時）</td>
+</tr>
+<tr>
+<td style="text-align: left;">產出</td>
+<td style="text-align: center;">RRMSE、MAPE 及誤差最大之 3 個測點<br />
+是否補點之判定<br />
+補點座標、補點建議圖及補點用資料表</td>
+</tr>
+</tbody>
+</table>
+<h2 id="一以-skill-辦理圖面驗證與補點">一、以 Skill
+辦理圖面驗證與補點</h2>
+<p>（一）製圖後輸入提示詞 14，Skill 會回覆 RRMSE、MAPE、誤差最大之 3
+個測點及是否建議補點。</p>
+<p>提示詞 14　範例</p>
+<p>請用白話告訴我這張圖可信到什麼程度：RRMSE、MAPE 各是多少、誤差最大的
+3 個點在哪裡、要不要補點。</p>
+<p>（二）建議補點時，輸入提示詞 15 前段，Skill
+會依本章第四節之順序提出補點位置，並提供補點建議圖及補點用資料表。使用者得依人力選擇要補哪些點。</p>
+<p>提示詞 15　範例</p>
+<p>給我補點建議圖和補點用的資料表。</p>
+<p>（三）至現場補點量測後，上傳補點結果，輸入提示詞 15 後段，Skill
+會併入同一份標準資料表重新製圖，並比較兩輪之結果。</p>
+<p>這是補點量測的結果，請併入第一次的標準資料表，備註寫明是第<strong>【2】</strong>輪，重新畫圖，並把兩次的
+RRMSE、MAPE、熱點位置和最高值列表比較。</p>
+<h2 id="二驗證方式">二、驗證方式</h2>
+<p>Skill
+以留一交叉驗證檢驗圖面：每次拿掉一個測點，用其餘測點以相同方法推估該點濃度，再與實測值比較，全部測點輪流一次後，計算下列兩項指標：</p>
+<table style="width:98%;">
+<colgroup>
+<col style="width: 8%" />
+<col style="width: 30%" />
+<col style="width: 60%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">指標</th>
+<th style="text-align: left;">計算方式</th>
+<th style="text-align: left;">意義</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">RRMSE</td>
+<td style="text-align: left;">RMSE ÷ 實測平均值 × 100%</td>
+<td
+style="text-align: left;">以相對誤差計算，熱區附近之大誤差會完整反映，可看出主要濃度差異是否被掌握</td>
+</tr>
+<tr>
+<td style="text-align: left;">MAPE</td>
+<td style="text-align: left;">平均（｜推估 − 實測｜÷ 實測）× 100%</td>
+<td
+style="text-align: left;">一個測點通常偏差之百分比；低濃度測點之誤差可能會被放大</td>
+</tr>
+</tbody>
+</table>
+<p>兩項指標應同時檢視，並參考絕對誤差最大之 3 個測點。</p>
+<h2 id="三判定原則">三、判定原則</h2>
+<p>（一）RRMSE 或 MAPE 任一項達 20% 以上者，建議補點。</p>
+<p>（二）兩項均低於 20%
+者，得視需要補點。熱區濃度接近管理值、管理決策取決於分區邊界，或需要較精細之圖面時，仍宜補點。</p>
+<p>（三）補點應以濃度梯度高處為優先。在濃度平緩之區域補點，雖可使兩項指標下降，但無法改善整體之推估。</p>
+<h2 id="四補點位置">四、補點位置</h2>
+<p>Skill 依下列順序提出補點位置：</p>
+<p>（一）最高點周圍之十字點：於最高點上下左右各半個測點間距處補點，確定峰值之位置及高度。</p>
+<p>（二）高濃度梯度中點：相鄰兩點濃度差異大於全場標準差者，於兩點中間補點。</p>
+<p>（三）涵蓋不足處：測點稀疏、推估不確定性最大之區域。</p>
+<p>補點均距障礙區邊緣至少 0.5 公尺，座標記至 0.1 公尺。需移動 2
+公尺以上才能避開障礙區者，表示該處無法進入，Skill
+會刪除並說明。補點建議圖只標示原有測點（藍色圓點）及建議補點（紅色菱形），不呈現濃度，以便現場定位。</p>
+<h2 id="五固定參考點濃度漂移">五、固定參考點濃度漂移</h2>
+<p>一台儀器逐點量測時，可以固定參考點於量測前、中、後之讀值判斷量測期間濃度是否改變。逐點量測之點位量測時間表中有重複量測同一點者，Skill
+會直接計算漂移。</p>
+<p>將三次讀值告知 Skill，輸入提示詞 16，Skill
+會計算漂移並提供備註文字。</p>
+<p>提示詞 16　範例</p>
+<p>固定參考點在量測前、中、後的讀值分別是<strong>【0.52】</strong>、<strong>【0.55】</strong>、<strong>【0.50】【ppm】</strong>，時間是<strong>【09:00】</strong>、<strong>【09:20】</strong>、<strong>【09:40】</strong>。請幫我判斷漂移是否可以接受，並給我要寫進備註的文字。</p>
+<p>漂移（%）＝（最大值 − 最小值）÷ 平均值 × 100%，判定方式如下：</p>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 77%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">漂移</th>
+<th style="text-align: left;">處理方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">10% 以下</td>
+<td style="text-align: left;">可接受，全部測點視為同一時段</td>
+</tr>
+<tr>
+<td style="text-align: left;">10% 至 30%</td>
+<td style="text-align: left;">記錄於備註，判讀時以相對高低為主</td>
+</tr>
+<tr>
+<td style="text-align: left;">超過 30%</td>
+<td
+style="text-align: left;">建議重新量測、縮短總量測時間，或分時段量測</td>
+</tr>
+</tbody>
+</table>
+<h1 id="第九章-判讀與管理應用">第九章　判讀與管理應用</h1>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 82%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">適用情形</th>
+<th
+style="text-align: center;">已有濃度分布圖，需找出熱區、計算超過管理值之範圍，或研擬管理措施。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">應備資料</td>
+<td style="text-align: center;">濃度分布圖<br />
+障礙區資料<br />
+容許濃度或自訂管理值（有者）</td>
+</tr>
+<tr>
+<td style="text-align: left;">產出</td>
+<td style="text-align: center;">熱區位置及鄰近設備<br />
+管理值分區面積及比例<br />
+管理措施（由使用者研擬）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="一以-skill-辦理判讀">一、以 Skill 辦理判讀</h2>
+<p>（一）製圖後輸入提示詞 17，Skill
+會回覆熱區位置、峰值、面積、鄰近設備及對應之實測點；有管理值者，另回覆各區面積、比例及超過管理值之測點數。</p>
+<p>提示詞 17　範例</p>
+<p>請告訴我熱區在哪裡、靠近哪些設備、峰值和面積多少，對應的是哪個實測點。<strong>【管理值是
+0.8 ppm，請列出各區面積和比例。】</strong></p>
+<p>（二）Skill
+只陳述判讀結果，不代為撰寫管理建議。管理措施應由使用者依第四節及現場情形研擬。</p>
+<h2 id="二熱區判讀">二、熱區判讀</h2>
+<p>（一）熱區為圖面濃度達「最低值加全距之 80%」以上之連續區域，最多列出
+5 處。鄰近設備依熱區峰值至設備邊緣之距離排序，最近者列第一。</p>
+<p>（二）熱區鄰近預判之逸散位置者，可佐證該處為逸散源，宜列為優先檢查對象。</p>
+<p>（三）熱區不在任何已知設備旁者，應先核對測點座標及編號方向；確認無誤時，可能為未知之逸散源、通風死角，或氣流將污染物帶往他處。</p>
+<p>（四）熱區僅由單一測點構成者，其位置及高度不確定，應依第八章補點。</p>
+<p>（五）熱點之濃度應以實測值為準，不得由圖面顏色讀取。</p>
+<h2 id="三管理值分區">三、管理值分區</h2>
+<p>（一）提供容許濃度或自訂管理值時，Skill
+預設依暴露分級管理之概念，將場域分為三區：低於容許濃度（PEL）或管理值之
+50%；50% 至 100%；達 100% 以上。使用者亦得自訂分區界限，例如「用 0.3 和
+0.6 ppm 分區」。</p>
+<p>（二）各區面積及比例均扣除障礙區。</p>
+<h2 id="四管理應用">四、管理應用</h2>
+<p>事業單位得參考下列方式運用分布圖：</p>
+<p>（一）達管理值以上之區域：確認逸散源，評估密閉、局部排氣或製程改善；改善後以相同測點再量測一次，分別製圖比較。</p>
+<p>（二）管理值 50% 至 100%
+之區域：檢視整體換氣及作業動線，並作為次年度作業環境監測採樣點位之參考。</p>
+<p>（三）作業環境監測測點初步規劃：對主要熱區、可能逸散源等分佈圖中濃度較高區域，得考慮設置監測點。</p>
+<p>（四）圖面驗證未達標準（RRMSE 或 MAPE 達 20%
+以上）者：管理判斷以熱區位置為主，補點後再重新製圖。</p>
+<p>（五）作為作業環境監測計畫初步危害分析之參考時，應註明分布圖之使用限制。</p>
+<h1 id="附錄一-標準提示詞">附錄一　標準提示詞</h1>
+<p>本附錄彙整各章引用之提示詞，供已安裝 Skill
+者使用。使用時得直接複製，加網底之<strong>【　】</strong>內文字應依實際情形修改，修改後<strong>【　】</strong>符號得刪除或保留。提示詞以一般口語撰寫即可，不需程式指令；未列於本附錄之需求，亦得以自己的話說明。</p>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 36%" />
+<col style="width: 37%" />
+<col style="width: 13%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">編號</th>
+<th style="text-align: left;">使用時機</th>
+<th style="text-align: left;">應附檔案</th>
+<th style="text-align: left;">章節</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">確認 Skill 已安裝</td>
+<td style="text-align: left;">無</td>
+<td style="text-align: left;">第二章</td>
+</tr>
+<tr>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">依平面圖規劃測點</td>
+<td style="text-align: left;">平面圖</td>
+<td style="text-align: left;">第三章</td>
+</tr>
+<tr>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">確認障礙區與逸散位置</td>
+<td style="text-align: left;">圈選逸散位置之平面圖（選用）</td>
+<td style="text-align: left;">第三章</td>
+</tr>
+<tr>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">產出佈點資料表</td>
+<td style="text-align: left;">無</td>
+<td style="text-align: left;">第三章</td>
+</tr>
+<tr>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">多台儀器同時量測之資料整理</td>
+<td style="text-align: left;">儀器記錄、儀器點位對應表</td>
+<td style="text-align: left;">第五章</td>
+</tr>
+<tr>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">一台儀器逐點量測之資料整理</td>
+<td style="text-align: left;">儀器記錄、點位量測時間表</td>
+<td style="text-align: left;">第五章</td>
+</tr>
+<tr>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">手寫記錄或格式不一之表格</td>
+<td style="text-align: left;">原始記錄</td>
+<td style="text-align: left;">第五章</td>
+</tr>
+<tr>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">只有測點編號而無座標</td>
+<td style="text-align: left;">佈點示意圖、測點讀值</td>
+<td style="text-align: left;">第五章</td>
+</tr>
+<tr>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;">檢查標準資料表</td>
+<td style="text-align: left;">標準資料表、平面圖（選用）</td>
+<td style="text-align: left;">第六章</td>
+</tr>
+<tr>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">說明可疑高值之現場情形</td>
+<td style="text-align: left;">無</td>
+<td style="text-align: left;">第六章</td>
+</tr>
+<tr>
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">製圖</td>
+<td style="text-align: left;">標準資料表、平面圖（疊圖時）</td>
+<td style="text-align: left;">第七章</td>
+</tr>
+<tr>
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">畫出管理值線並分區</td>
+<td style="text-align: left;">無</td>
+<td style="text-align: left;">第七章</td>
+</tr>
+<tr>
+<td style="text-align: left;">13</td>
+<td style="text-align: left;">更換色階</td>
+<td style="text-align: left;">無</td>
+<td style="text-align: left;">第七章</td>
+</tr>
+<tr>
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">判斷圖面可信程度</td>
+<td style="text-align: left;">無</td>
+<td style="text-align: left;">第八章</td>
+</tr>
+<tr>
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">補點及第二輪合併</td>
+<td style="text-align: left;">補點量測結果（後段）</td>
+<td style="text-align: left;">第八章</td>
+</tr>
+<tr>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">固定參考點漂移</td>
+<td style="text-align: left;">無</td>
+<td style="text-align: left;">第八章</td>
+</tr>
+<tr>
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">熱區及管理值範圍</td>
+<td style="text-align: left;">無</td>
+<td style="text-align: left;">第九章</td>
+</tr>
+</tbody>
+</table>
+<h2 id="提示詞-1-確認-skill-已安裝">提示詞 1　確認 Skill 已安裝</h2>
+<p>你有沒有製作作業場所濃度分布圖的技能？請用繁體中文說明它分成哪些步驟、每一步需要我提供什麼資料。</p>
+<h2 id="提示詞-2-依平面圖規劃測點">提示詞 2　依平面圖規劃測點</h2>
+<p>這是<strong>【烘乾區】</strong>的平面圖，實際大小是 X
+方向<strong>【30】</strong>公尺、Y
+方向<strong>【26】</strong>公尺，左下角為原點。我要量<strong>【苯】</strong>，單位<strong>【ppm】</strong>。請先判斷平面圖上哪些地方不能站（設備、樓梯等），給我確認，也告訴我你刻意沒有標的東西，再問我可能逸散的位置。</p>
+<h2 id="提示詞-3-確認障礙區與逸散位置">提示詞
+3　確認障礙區與逸散位置</h2>
+<p>障礙區這樣可以，但<strong>【烘乾機 C 出口端站】</strong>實際只到
+X<strong>【26】</strong>公尺；<strong>【左上角的風扇是吊在天花板上】</strong>，不用排除。可能逸散的位置是<strong>【烘乾機
+A
+入口】</strong>和<strong>【換桶區】</strong>，我在圖上圈起來了。請依此佈點，先給我佈點圖確認。</p>
+<h2 id="提示詞-4-產出佈點資料表">提示詞 4　產出佈點資料表</h2>
+<p>佈點可以。請給我已填好座標並附佈點圖的標準資料表，另外我會用<strong>【一台儀器逐點量測／多台儀器同時量測】</strong>，請一併給我<strong>【點位量測時間表／儀器點位對應表】</strong>。每點停留<strong>【1】</strong>分鐘。</p>
+<h2 id="提示詞-5-多台儀器同時量測之資料整理">提示詞
+5　多台儀器同時量測之資料整理</h2>
+<p>這是多台感測器同時記錄的【苯】資料，每<strong>【10】</strong>秒記一筆，感測器對應的點位編號在附檔的儀器點位對應表。請先幫我看濃度什麼時候開始穩定，用穩定後的平均當作各點濃度，整理成標準資料表。<strong>【（有背景測點時）S-27
+是室外背景，不要扣除，只列出來給我看。】</strong>有問題先告訴我。</p>
+<h2 id="提示詞-6-一台儀器逐點量測之資料整理">提示詞
+6　一台儀器逐點量測之資料整理</h2>
+<p>現場濃度是用同一台<strong>【PID】</strong>逐點量的，儀器每<strong>【10】</strong>秒記一筆，各點的開始時間和量測時長寫在點位量測時間表裡。每個點剛到的前<strong>【20】</strong>秒讀值還不穩，請不要算進去，其餘取平均，整理成標準資料表。有問題先告訴我。</p>
+<h2 id="提示詞-7-手寫記錄或格式不一之表格">提示詞
+7　手寫記錄或格式不一之表格</h2>
+<p>這是現場手寫後打成 Excel
+的<strong>【苯】</strong>記錄，排成格子狀，最上面一列是 X
+位置，最左邊一欄是 Y
+位置，<strong>【第一列是靠北邊（圖的上方）】</strong>。請整理成標準資料表：數字後面的單位拿掉，空白或寫「未測」的格子留空並在備註寫原因。整理完先給我看座標方向對不對。</p>
+<h2 id="提示詞-8-只有測點編號而無座標">提示詞
+8　只有測點編號而無座標</h2>
+<p>我只有測點編號<strong>【P01 到
+P20】</strong>和讀值，沒有座標，附上當時的佈點示意圖。場域是
+X<strong>【24】</strong>公尺、Y<strong>【14】</strong>公尺，編號從<strong>【左下角】</strong>開始、<strong>【先往右】</strong>排。請在圖上讀出每個點的座標，列表給我核對，確認後再整理成標準資料表。</p>
+<h2 id="提示詞-9-檢查標準資料表">提示詞 9　檢查標準資料表</h2>
+<p>請先檢查這份標準資料表，有需要修正的地方告訴我，濃度是 0
+的點、特別高的點和落在設備裡的點也列出來，我確認後再畫圖。</p>
+<h2 id="提示詞-10-說明可疑高值之現場情形">提示詞
+10　說明可疑高值之現場情形</h2>
+<p><strong>【P03】</strong>特別高，它旁邊是<strong>【烘乾機 C
+入口】</strong>，重複量測<strong>【仍然偏高】</strong>，量的時候<strong>【沒有】</strong>臨時作業，請保留。<strong>【P15
+當時正在換桶，請另外畫一張排除 P15
+的圖比較，正式的圖還是保留。】</strong></p>
+<h2 id="提示詞-11-製圖">提示詞 11　製圖</h2>
+<p>用預設的方式畫濃度分布圖，疊在平面圖上，<strong>【烘乾機
+A、B、C】</strong>的位置用斜線遮起來，圖上標出每個點的濃度。</p>
+<h2 id="提示詞-12-畫出管理值線並分區">提示詞 12　畫出管理值線並分區</h2>
+<p>我們的管理值是<strong>【0.8】【ppm】</strong>，請在圖上畫出這條紅線，依這個值分區，告訴我超過管理值的面積、比例和測點數。</p>
+<h2 id="提示詞-13-更換色階">提示詞 13　更換色階</h2>
+<p>先給我看幾種色階的範例，我再選。</p>
+<h2 id="提示詞-14-判斷圖面可信程度">提示詞 14　判斷圖面可信程度</h2>
+<p>請用白話告訴我這張圖可信到什麼程度：RRMSE、MAPE 各是多少、誤差最大的
+3 個點在哪裡、要不要補點。</p>
+<h2 id="提示詞-15-補點及第二輪合併">提示詞 15　補點及第二輪合併</h2>
+<p>前段於補點前使用，後段於補點量測後使用。</p>
+<p>給我補點建議圖和補點用的資料表。</p>
+<p>這是補點量測的結果，請併入第一次的標準資料表，備註寫明是第<strong>【2】</strong>輪，重新畫圖，並把兩次的
+RRMSE、MAPE、熱點位置和最高值列表比較。</p>
+<h2 id="提示詞-16-固定參考點漂移">提示詞 16　固定參考點漂移</h2>
+<p>固定參考點在量測前、中、後的讀值分別是<strong>【0.52】</strong>、<strong>【0.55】</strong>、<strong>【0.50】【ppm】</strong>，時間是<strong>【09:00】</strong>、<strong>【09:20】</strong>、<strong>【09:40】</strong>。請幫我判斷漂移是否可以接受，並給我要寫進備註的文字。</p>
+<h2 id="提示詞-17-熱區及管理值範圍">提示詞 17　熱區及管理值範圍</h2>
+<p>請告訴我熱區在哪裡、靠近哪些設備、峰值和面積多少，對應的是哪個實測點。<strong>【管理值是
+0.8 ppm，請列出各區面積和比例。】</strong></p>
+</body>
+</html>

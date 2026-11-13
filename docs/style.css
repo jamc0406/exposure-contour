@@ -1,0 +1,92 @@
+/* 濃度分布圖製作技術手冊 — 網頁版樣式 */
+:root {
+  --fg: #1f2328;
+  --muted: #59636e;
+  --accent: #0b6e4f;
+  --border: #d0d7de;
+  --bg-soft: #f6f8fa;
+  --toc-w: 290px;
+}
+html { scroll-behavior: smooth; scroll-padding-top: 1rem; }
+body {
+  font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "Heiti TC", system-ui, sans-serif;
+  color: var(--fg);
+  background: #fff;
+  line-height: 1.85;
+  font-size: 17px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1.25rem 4rem;
+  hyphens: none;
+  overflow-wrap: anywhere;
+}
+a { color: var(--accent); }
+
+/* 頂部連結列 */
+.topbar {
+  display: flex; flex-wrap: wrap; gap: .5rem 1.1rem; align-items: center;
+  padding: .8rem 0; margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border); font-size: .92rem;
+}
+.topbar a { text-decoration: none; }
+.topbar a:hover { text-decoration: underline; }
+.topbar .btn {
+  background: var(--accent); color: #fff; padding: .3rem .8rem; border-radius: 6px;
+}
+.topbar .btn:hover { text-decoration: none; opacity: .9; }
+
+/* 標題區 */
+header#title-block-header { margin: 2rem 0 2.5rem; text-align: left; }
+header#title-block-header .title { font-size: 2rem; line-height: 1.4; margin: 0 0 .4rem; }
+header#title-block-header .subtitle { font-size: 1.15rem; color: var(--muted); margin: 0 0 .4rem; }
+header#title-block-header .date { color: var(--muted); font-size: .95rem; margin: 0; }
+
+/* 章節標題 */
+h1, h2, h3, h4 { line-height: 1.45; margin-top: 2.2em; }
+h1 { font-size: 1.65rem; padding-bottom: .35rem; border-bottom: 2px solid var(--accent); }
+h2 { font-size: 1.3rem; }
+h3 { font-size: 1.1rem; }
+h1:first-of-type { margin-top: 1.5rem; }
+
+/* 目錄 */
+nav#TOC { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 8px; padding: .8rem 1rem; font-size: .93rem; line-height: 1.6; }
+nav#TOC h2 { margin: 0 0 .4rem; font-size: 1rem; }
+nav#TOC ul { list-style: none; padding-left: 0; margin: 0; }
+nav#TOC ul ul { padding-left: 1.1rem; margin-bottom: .4rem; }
+nav#TOC > ul > li > a { font-weight: 600; }
+nav#TOC a { text-decoration: none; color: var(--fg); display: block; padding: .1rem 0; }
+nav#TOC a:hover { color: var(--accent); }
+
+@media (min-width: 1240px) {
+  body { margin-left: calc(var(--toc-w) + 3rem); }
+  nav#TOC {
+    position: fixed; top: 0; left: 0; width: var(--toc-w); height: 100vh;
+    overflow-y: auto; border-radius: 0; border-width: 0 1px 0 0; padding: 1.2rem 1rem 2rem;
+    box-sizing: border-box;
+  }
+}
+
+/* 表格 */
+table { border-collapse: collapse; width: 100%; margin: 1.2rem 0; font-size: .93rem; line-height: 1.6; display: block; overflow-x: auto; }
+th, td { border: 1px solid var(--border); padding: .45rem .65rem; vertical-align: top; text-align: left; }
+thead th, tr.header th { background: #eef4f1; }
+tbody tr:nth-child(even) { background: #fafbfc; }
+caption { caption-side: top; font-weight: 600; margin-bottom: .4rem; text-align: left; }
+
+/* 圖片、程式碼、引言 */
+img { max-width: 100%; height: auto; }
+figure { margin: 1.5rem 0; text-align: center; }
+figcaption { color: var(--muted); font-size: .9rem; }
+code { font-size: .9em; background: var(--bg-soft); padding: .1em .35em; border-radius: 4px; }
+pre { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 6px; padding: .9rem 1rem; overflow-x: auto; line-height: 1.6; white-space: pre-wrap; }
+pre code { background: none; padding: 0; }
+blockquote { margin: 1rem 0; padding: .6rem 1rem; border-left: 4px solid var(--accent); background: var(--bg-soft); color: var(--fg); }
+
+@media (max-width: 600px) {
+  body { font-size: 16px; padding: 0 .9rem 3rem; }
+  header#title-block-header .title { font-size: 1.5rem; }
+}
+@media print {
+  .topbar, nav#TOC { display: none; }
+  body { margin: 0 auto; max-width: none; }
+}
