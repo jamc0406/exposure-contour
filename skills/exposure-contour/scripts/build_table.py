@@ -265,6 +265,62 @@ def build_simple(kind, points=None, out=None, minutes=None, blank_rows=200, meta
     return out
 
 
+def fill(xlsx, points, out, overwrite=False):
+    """Fill measured values into an existing standard table by point_id, keeping everything else
+    (remark, embedded map, other points). Used after round 2: the densify table already lists every
+    round-1 point with its values plus the new points with blank cells.
+
+    points: dicts with point_id and any of c1/c2/c3/note (x_m/y_m used only for IDs not yet listed).
+    A non-empty cell is kept unless overwrite=True; notes are appended. Unknown IDs are added at the end.
+    """
+    wb = openpyxl.load_workbook(xlsx)
+    ws = wb[SHEET] if SHEET in wb.sheetnames else wb.worksheets[0]
+    col = {str(c.value).strip(): c.column for c in ws[1] if c.value}
+    if 'point_id' not in col:
+        raise SystemExit(f'{xlsx}: no point_id column in row 1')
+    where, last = {}, 2
+    for r in range(3, ws.max_row + 1):
+        v = ws.cell(r, col['point_id']).value
+        if v not in (None, ''):
+            where[str(v).strip()] = r
+            last = r
+    filled, added, kept = [], [], []
+    for p in points:
+        pid = str(p.get('point_id') or '').strip()
+        if not pid:
+            continue
+        r = where.get(pid)
+        if r is None:
+            last += 1; r = last; where[pid] = r; added.append(pid)
+            ws.cell(r, col['point_id'], pid)
+            for k in ('x_m', 'y_m'):
+                if p.get(k) not in (None, ''):
+                    ws.cell(r, col[k], float(p[k]))
+        did = False
+        for k in ('c1', 'c2', 'c3'):
+            v = p.get(k)
+            if v in (None, '') or k not in col:
+                continue
+            cell = ws.cell(r, col[k])
+            if cell.value not in (None, '') and not overwrite:
+                kept.append(f'{pid}.{k}'); continue
+            try:
+                cell.value = float(v)
+            except (TypeError, ValueError):
+                cell.value = v
+            did = True
+        n = str(p.get('note') or '').strip()
+        if n and 'note' in col:
+            cell = ws.cell(r, col['note'])
+            old = str(cell.value or '').strip()
+            if n not in old:
+                cell.value = (old + '；' if old else '') + n
+        if did and pid not in added:
+            filled.append(pid)
+    wb.save(out)
+    return dict(filled=filled, added=added, kept=kept)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--blank', action='store_true')
@@ -277,8 +333,24 @@ def main():
                          'instrument = instrument-point mapping table')
     ap.add_argument('--minutes', type=float, help='time table: pre-fill duration_min')
     ap.add_argument('--embed', help='existing standard table to embed an image into')
+    ap.add_argument('--fill', help='existing standard table (e.g. round-2 table from plan.py densify) '
+                                   'to fill with --points values by point_id; writes --out')
+    ap.add_argument('--overwrite', action='store_true', help='--fill: replace cells that already hold a value')
     ap.add_argument('--image'); ap.add_argument('--title', default='')
     a = ap.parse_args()
+    if a.fill:
+        if not (a.points and a.out):
+            raise SystemExit('--fill needs --points and --out')
+        with open(a.points, encoding='utf-8-sig', newline='') as f:
+            pts = list(csv.DictReader(f))
+        r = fill(a.fill, pts, a.out, a.overwrite)
+        print(f"Filled {len(r['filled'])} points" + (f": {', '.join(r['filled'])}" if r['filled'] else ''))
+        if r['added']:
+            print(f"⚠ not in the table, added at the end: {', '.join(r['added'])} (check IDs)")
+        if r['kept']:
+            print(f"⚠ cells already filled, kept (use --overwrite to replace): {', '.join(r['kept'])}")
+        print('Wrote', a.out)
+        return
     if a.embed:
         r = embed_image(a.embed, a.image, a.title)
         print(f"Embedded {a.image} into {a.embed} at row {r['row']} ({r['width_px']} x {r['height_px']} px)")

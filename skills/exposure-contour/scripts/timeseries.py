@@ -53,8 +53,11 @@ def read_series(path):
     tcol = df.columns[0]
     t = df[tcol]
     t_first = None
-    if not np.issubdtype(t.dtype, np.number):
-        tt = pd.to_datetime(t, errors='coerce')
+    # pandas >= 3 reads text columns as StringDtype, which numpy cannot interpret: ask pandas instead
+    if not pd.api.types.is_numeric_dtype(t):
+        tt = pd.to_datetime(t.astype(str), errors='coerce', format='mixed')
+        if tt.isna().all():
+            raise SystemExit(f'time column {tcol!r}: neither seconds nor date/time values')
         t_first = tt.iloc[0] if pd.notna(tt.iloc[0]) else None
         t = (tt - tt.iloc[0]).dt.total_seconds()
     df = df.assign(**{tcol: t}).dropna(subset=[tcol])

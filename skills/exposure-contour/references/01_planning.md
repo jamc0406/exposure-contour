@@ -122,7 +122,8 @@ When the map's RRMSE or MAPE is ≥ 20% (04_quality.md), add points in this orde
 3. the map's coverage suggestions (`make_map.py`, sparse uncertain areas).
 
 ```bash
-python scripts/plan.py densify --table round1.xlsx --plan plan.json --layout layout.json --out-dir out
+python scripts/plan.py densify --table round1.xlsx --plan plan.json --layout layout.json --out-dir out \
+       [--time-table [--minutes USER_GIVEN]] [--instrument-table] [--fieldsheet] [--keep-round1]
 ```
 
 - Rule 1: 4 points in a cross at spacing / 2 around the highest point.
@@ -130,12 +131,22 @@ python scripts/plan.py densify --table round1.xlsx --plan plan.json --layout lay
 - Every new point keeps ≥ 0.5 m from obstacles and is rounded to 0.1 m. A point that would have to move more than 2 m is dropped and reported, because the area itself is not reachable. Tell the user rather than relocating it somewhere unrelated.
 - Points outside the field or within 1/4 spacing of existing points are skipped.
 
-Outputs: `第二階_加密點座標.csv` (coordinates and the rule behind each point), `第二階_補點建議圖.png` and `第二階_加密現場記錄表.xlsx`. The figure shows the plan and hatched obstacles with **two marker shapes only**: existing points as blue circles (P…) and suggested points as red diamonds (Q…), each labelled, with a legend giving both counts. It has no concentration colour scale on purpose: it is for finding the spots on site, and the concentrations are already on the map. `make_map.py`'s coverage suggestions (`_補點建議.png`) are drawn the same way.
+Outputs:
+- **`第二階_標準資料表.xlsx` — the deliverable.** One standard table listing **every round-1 point followed by the suggested points**, with the suggestion figure embedded below the basic info. **All concentrations are blank**: round 2 re-measures every point, so the whole map comes from one period. Round-1 notes and remark are not carried over as current data (the round-1 remark is kept in brackets as history; the survey date is left for the user). Never deliver a table with only the new points.
+- `第二階_補點建議圖.png`, `第二階_加密點座標.csv` (new points only, with the rule behind each).
+- With `--time-table` / `--instrument-table` / `--fieldsheet`: the time table, mapping table or field sheet for **all points** to be measured.
+- **Reusing round-1 values is the user's decision, not the default.** Only when the user says they cannot re-measure everything (usually time), add `--keep-round1`: round-1 values and notes are carried over (note 「第一階點位，沿用第一階量測值」), the time/mapping table and field sheet then cover the new points only, and the remark records that round-1 values were reused. Tell the user that mixing two periods makes the map less consistent; check the drift / reference point if available.
 
-Merge into one table (points of all rounds, notes saying which round), re-map, and report RRMSE, MAPE and the 3 largest errors next to the previous round. Optionally:
+The figure shows the plan and hatched obstacles with **two marker shapes only**: existing points as blue circles (P…) and suggested points as red diamonds (Q…), each labelled, with a legend giving both counts. It has no concentration colour scale on purpose: it is for finding the spots on site, and the concentrations are already on the map. `make_map.py`'s coverage suggestions (`_補點建議.png`) are drawn the same way.
+
+After round 2, put the values into that same table (log → `logs_to_points.py` → points.csv, or values the user typed), re-map, and report RRMSE, MAPE and the 3 largest errors next to the previous round:
 
 ```bash
-python scripts/plan.py compare --before round1.xlsx --after merged.xlsx --spacing ROUND1_SPACING
+python scripts/build_table.py --fill out/第二階_標準資料表.xlsx --points round2_points.csv --out round2.xlsx
+python scripts/make_map.py round2.xlsx --out-dir out2 --plan plan.json --layout layout.json
+python scripts/plan.py compare --before round1.xlsx --after round2.xlsx --spacing ROUND1_SPACING
 ```
+
+`--fill` matches by point_id, keeps the embedded map, remark and any value already in the table (e.g. round-1 values under `--keep-round1`; a filled cell is kept unless `--overwrite`), appends notes, and lists IDs that were not in the table (added at the end; usually a typo to check with the user).
 
 The stop rule is a hot-spot shift ≤ spacing / 2 and a map peak change ≤ 10%, together with RRMSE and MAPE both below 20%.

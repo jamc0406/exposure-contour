@@ -10,7 +10,9 @@ Subcommands
              coordinates to 0.1 m (P3, P4); writes the standard table with the layout map
              embedded below the basic info (the deliverable), a preview PNG and a coordinate
              CSV; optional field sheet, point measurement time table, instrument mapping table
-  densify    round-2 densification by two rules, 0.5 m clearance, 0.1 m coordinates (P7)
+  densify    round-2 densification by two rules, 0.5 m clearance, 0.1 m coordinates (P7); writes ONE
+             standard table with all round-1 points + the new points, map embedded; concentrations blank
+             (all points re-measured) unless --keep-round1
   compare    hot-spot shift and peak change before/after, stop rule (P7)
   fieldsheet field sheet from a coordinate list (P6)
 
@@ -421,7 +423,7 @@ def densify_points(x, y, z, ids, spacing, Lx, Ly, layout=None, clear=E.CLEARANCE
 
 def cmd_densify(a):
     plt = E.setup_matplotlib()
-    meta, rows, _ = E.read_table(a.table)
+    meta, rows, labels = E.read_table(a.table)
     Lx, Ly = E.field_dims(meta, a.field)
     res = E.derive_points(meta, rows, repeat=a.repeat, field=(Lx, Ly))
     inc = res['included']
@@ -449,17 +451,73 @@ def cmd_densify(a):
     plot_points(plt, old + kept, Lx, Ly, cal, layout,
                 (title + '　' if title else '') + f'第二階補點建議（{len(kept)} 點）', base + '_補點建議圖.png',
                 extra=legend)
-    if kept:
-        make_fieldsheet(kept, base + '_加密現場記錄表.xlsx',
-                        dict(site_name=meta.get('site_name', ''), c_name=meta.get('c_name', ''),
-                             c_unit=meta.get('c_unit', '')))
+    written = [base + '_加密點座標.csv', base + '_補點建議圖.png']
+    # the deliverable: ONE standard table with every round-1 point followed by the suggested points,
+    # map embedded. Round 2 re-measures ALL points (best: one period for the whole map), so all
+    # concentrations are blank; only --keep-round1 (the user's choice, e.g. short of time) carries
+    # the round-1 values over and then only the new points are measured.
+    import build_table
+    r1_rows = []
+    for r in rows:
+        d = {k: r.get(k) for k in E.PT_COLS}
+        if not a.keep_round1:
+            d.update(c1=None, c2=None, c3=None)
+        if d.get('x_m') not in (None, ''):
+            d['x_m'] = E.round_coord(float(d['x_m'])) if E.num(d['x_m']) is not None else d['x_m']
+        if d.get('y_m') not in (None, ''):
+            d['y_m'] = E.round_coord(float(d['y_m'])) if E.num(d['y_m']) is not None else d['y_m']
+        old_note = str(d.get('note') or '').strip() if a.keep_round1 else ''
+        d['note'] = ('第一階點位，沿用第一階量測值' if a.keep_round1 else '第一階點位，第二階重新量測') + (
+            '；' + old_note if old_note else '')
+        r1_rows.append(d)
+    r2_rows = [dict(point_id=p['point_id'], x_m=E.round_coord(p['x']), y_m=E.round_coord(p['y']),
+                    note='第二階補點：' + p['note']) for p in kept]
+    meta2 = {k: v for k, v in meta.items() if k in {m[0] for m in build_table.META}}
+    old_rm = str(meta.get('remark') or '').strip().rstrip('。；')
+    summary = (f'第二階補點 {len(kept)} 點（{kept[0]["point_id"]}–{kept[-1]["point_id"]}）' if kept else '第二階無建議補點') + (
+        f'；第一階 {len(r1_rows)} 點沿用第一階量測值（使用者決定）' if a.keep_round1 else
+        f'；第一階 {len(r1_rows)} 點與補點全部重新量測')
+    if a.keep_round1:
+        meta2['remark'] = (old_rm + '；' if old_rm else '') + summary
+    else:   # new measurement: round-1 date and remark describe round-1 values, keep them only as history
+        meta2.pop('survey_date', None)
+        meta2['remark'] = summary + (f'；（第一階備註：{old_rm}）' if old_rm else '')
+    xlsx = base + '_標準資料表.xlsx'
+    build_table.build(meta2, r1_rows + r2_rows, xlsx, labels=labels)
+    build_table.embed_image(xlsx, base + '_補點建議圖.png',
+                            f'第二階補點建議圖（原有 {len(old)} 點為藍色圓點，建議補點 {len(kept)} 點為紅色菱形）')
+    written.insert(0, xlsx)
+    # points measured in round 2: all of them by default, only the new ones with --keep-round1
+    meas_rows = r2_rows if a.keep_round1 else r1_rows + r2_rows
+    meas_pts = kept if a.keep_round1 else [dict(point_id=d['point_id'], x=float(d['x_m']), y=float(d['y_m']))
+                                           for d in r1_rows if E.num(d.get('x_m')) is not None] + kept
+    if meas_rows:
+        fs_meta = dict(site_name=meta.get('site_name', ''), c_name=meta.get('c_name', ''),
+                       c_unit=meta.get('c_unit', ''))
+        if a.fieldsheet:
+            make_fieldsheet(meas_pts, base + '_現場記錄表.xlsx', fs_meta)
+            written.append(base + '_現場記錄表.xlsx')
+        if a.time_table:
+            build_table.build_simple('time', meas_rows, base + '_點位量測時間表.xlsx', minutes=a.minutes, meta=fs_meta)
+            written.append(base + '_點位量測時間表.xlsx')
+        if a.instrument_table:
+            build_table.build_simple('instrument', meas_rows, base + '_儀器點位對應表.xlsx', meta=fs_meta)
+            written.append(base + '_儀器點位對應表.xlsx')
     print(f'Round 1: {len(inc)} valid points, spacing ~{s:.2f} m, SD {sd:.4g}')
     print(f'Suggest {len(kept)} new points (rule 1: {sum(p["rule"]==1 for p in kept)}, rule 2: {sum(p["rule"]==2 for p in kept)})')
     for p in kept:
         print(f"  {p['point_id']}  ({p['x']:.1f}, {p['y']:.1f})  {p['note']}")
     if dropped:
         print(f'Skipped {len(dropped)}: ' + '; '.join(f"({p['x']:.1f},{p['y']:.1f}) {why}" for p, why in dropped[:8]))
-    print('Wrote', base + '_加密點座標.csv, ' + base + '_補點建議圖.png')
+    for f in written:
+        print('Wrote', f)
+    if a.keep_round1:
+        print('Deliver ' + os.path.basename(xlsx) + f': {len(r1_rows)} round-1 points WITH their round-1 values (user chose to '
+              f'reuse them) + {len(kept)} new points to measure, map embedded. Fill new values with build_table.py --fill.')
+    else:
+        print('Deliver ' + os.path.basename(xlsx) + f': all {len(r1_rows) + len(kept)} points ({len(r1_rows)} round-1 + {len(kept)} new), '
+              'concentrations blank: round 2 re-measures every point. Reusing round-1 values (--keep-round1) is only '
+              "the user's choice, e.g. when short of time.")
 
 
 def cmd_compare(a):
@@ -528,6 +586,13 @@ def main():
             p.add_argument('--spacing', type=float, help='round-1 spacing (default mean NN distance)')
             p.add_argument('--prefix', default='Q')
             p.add_argument('--repeat', default='mean')
+            p.add_argument('--minutes', type=float, help='dwell time per point (min) for the time table')
+            p.add_argument('--keep-round1', action='store_true',
+                           help="carry round-1 values over and measure only the new points (user's choice, "
+                                'e.g. short of time); default: all points blank, everything re-measured')
+            p.add_argument('--fieldsheet', action='store_true', help='also write the A4 field sheet (points to measure)')
+            p.add_argument('--time-table', action='store_true', help='also write the time table (points to measure)')
+            p.add_argument('--instrument-table', action='store_true', help='also write the mapping table (points to measure)')
 
     p = sp.add_parser('compare'); p.add_argument('--before', required=True); p.add_argument('--after', required=True)
     p.add_argument('--spacing', type=float); p.add_argument('--field', type=float, nargs=2)

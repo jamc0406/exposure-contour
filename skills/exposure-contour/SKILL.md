@@ -49,7 +49,7 @@ Read the matching reference before each stage; it holds the steps, thresholds an
    - **RRMSE and MAPE** from leave-one-out, plus the 3 largest errors. If either is ≥ 20%, recommend adding points; if both are < 20%, adding points is optional.
    - Point suggestions that keep 0.5 m from obstacles.
    - Statistics, hot zones (nearby equipment ranked by distance to its edge), area ≥ OEL, `results.json`.
-5. **Round 2** (`plan.py densify`, then re-map): when either metric is ≥ 20%, add the cross around the highest point first, then gradient midpoints, then coverage suggestions. Merge the new points into one table and compare RRMSE and MAPE with the previous round.
+5. **Round 2** (`plan.py densify`, then re-map): when either metric is ≥ 20%, add the cross around the highest point first, then gradient midpoints, then coverage suggestions. `densify` delivers **one standard table with all round-1 points plus the new points, all concentrations blank** (round 2 re-measures every point), map embedded. Reuse round-1 values (`--keep-round1`, only new points measured) **only when the user decides to**, e.g. for lack of time. After measuring, fill the values in with `build_table.py --fill`, re-map, and compare RRMSE and MAPE with the previous round.
    - Both suggestion figures (`第二階_補點建議圖.png` from `densify`, `_補點建議.png` from `make_map.py`) show only two marker shapes, existing points as blue circles and suggested points as red diamonds, with no concentration colour scale: they are for finding the spots on site.
 
 ## Hard rules
@@ -85,7 +85,8 @@ python $S/build_table.py --meta meta.json --points points.csv --out table.xlsx
 python $S/validate_table.py table.xlsx --layout layout.json
 python $S/make_map.py table.xlsx --out-dir out --plan plan.json --layout layout.json [--oel USER_GIVEN] [--labels]
 python $S/make_map.py table.xlsx --colormap-preview --out-dir out
-python $S/plan.py densify --table round1.xlsx --plan plan.json --layout layout.json --out-dir out
+python $S/plan.py densify --table round1.xlsx --plan plan.json --layout layout.json --out-dir out [--time-table] [--instrument-table] [--keep-round1]
+python $S/build_table.py --fill out/第二階_標準資料表.xlsx --points round2_points.csv --out round2.xlsx
 python $S/drift.py --readings BEFORE MID AFTER          # ≤10% ok, 10–30% note, >30% re-measure
 ```
 
@@ -94,6 +95,7 @@ Every script has `--help`.
 ## Tell the user when delivering
 
 - **Planning:** the layout PNG for confirmation, a table of the obstacles you judged (with reasons) plus what you did not mark, and the source question. After confirmation, deliver only the standard table, plus the time or mapping table if needed. Give the numbering direction and say which points were moved or dropped for clearance.
+- **Round 2:** the suggestion figure and `第二階_標準資料表.xlsx` (all round-1 points + the new points, concentrations blank: re-measure everything), plus the time or mapping table if needed; list each new point with its rule, and say that reusing round-1 values is possible only if they choose to (time constraints).
 - **Data:** the data source and number of readings, the drift of every repeated point and its verdict, how each point's value was derived (time window per point and skipped seconds; or the detected steady start, why the minute before it failed, and the averaging window), points with missing or short data, LOD substitution, zeros, flagged outliers.
 - **Reliability:** RRMSE and MAPE, the 3 largest errors, and the verdict (≥ 20% on either → recommend adding points, with the prioritised list; both < 20% → optional).
 - **Results:** where the hot zones are and what equipment is nearby; with an OEL, the area ≥ OEL, its share and the number of points above it.

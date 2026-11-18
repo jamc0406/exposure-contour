@@ -29,7 +29,7 @@ import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import ecore as E  # noqa: E402
 
-VERSION = 'exposure-contour 1.2'
+VERSION = 'exposure-contour 1.3'
 
 
 # ---- plotting ----
