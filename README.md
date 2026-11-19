@@ -5,7 +5,7 @@
 ## 技術手冊
 
 - 📖 **[網頁版（線上閱讀）](https://jamc0406.github.io/exposure-contour/)**
-- [Markdown 版](docs/manual.md)　·　[Word 檔下載](docs/濃度分布圖製作技術手冊.docx)
+- [Markdown 版](docs/manual.md)　·　[PDF 下載](docs/濃度分布圖製作技術手冊.pdf)
 
 ## 下載
 
