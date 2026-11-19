@@ -4,7 +4,7 @@
 
 勞動部勞動及職業安全衛生研究所委託研究計畫　·　中華民國 115 年 11 月（草稿）
 
-> 網頁版：<https://jamc0406.github.io/exposure-contour/>　·　Skill 安裝檔：[exposure-contour.skill](https://github.com/jamc0406/exposure-contour/releases/latest/download/exposure-contour.skill)　·　[Word 檔](濃度分布圖製作技術手冊.docx)
+> 網頁版：<https://jamc0406.github.io/exposure-contour/>　·　Skill 安裝檔：[exposure-contour.skill](https://github.com/jamc0406/exposure-contour/releases/latest/download/exposure-contour.skill)　·　[Word 檔](濃度分布圖製作技術手冊.docx)　·　[ConcTour 離線版](https://github.com/jamc0406/ConcTour/releases/latest/download/ConcTour-offline.zip)　·　[單檔指引](https://github.com/jamc0406/exposure-contour/releases/latest/download/exposure-contour-LLM-guide.md)
 
 ## 第一章　前言
 
@@ -149,7 +149,8 @@
 <tr>
 <td style="text-align: left;">應備資料</td>
 <td style="text-align: center;">大型語言模型帳號（使用 Skill 者）；<br />
-Skill 安裝檔（exposure-contour.skill 或 .zip）。</td>
+Skill 安裝檔（exposure-contour.skill 或 .zip）；<br />
+不能安裝 Skill 者，改備單檔指引（濃度分佈圖_LLM作業指引_v1.3.md）。</td>
 </tr>
 </tbody>
 </table>
@@ -223,7 +224,7 @@ Skill 安裝檔（exposure-contour.skill 或 .zip）。</td>
 
 資料安全要求不同時，宜依下列原則選用：
 
-（一）資料不得離開廠區者：使用 ConcTour，得下載後於內部電腦離線開啟，運算均於瀏覽器內完成，不傳送任何資料。
+（一）資料不得離開廠區者：使用 ConcTour，得下載後於內部電腦離線開啟，運算均於瀏覽器內完成，不傳送任何資料。離線版下載位置：<https://github.com/jamc0406/ConcTour/releases/latest/download/ConcTour-offline.zip>
 
 （二）資料得上傳雲端，但不宜揭露廠名或製程者：使用 Skill 或標準提示詞前，將場域名稱改為代號，平面圖去除廠名、製程及設備名稱，僅提供座標與濃度。
 
@@ -243,7 +244,7 @@ Skill 由下列部分組成，使用者不需修改：
 
 ### 三、安裝 Skill
 
-Skill 只需安裝一次，之後每個新對話均可使用。各工具之選單名稱可能隨版本調整，本節依中華民國 115 年 11 月各工具之官方說明撰寫，畫面與本節不同時，應以各工具最新之說明為準。Skill 須在可執行程式碼之環境中運作，安裝前應確認帳號方案支援技能（Skills）及程式碼執行功能。
+Skill 只需安裝一次，之後每個新對話均可使用。各工具之選單名稱可能隨版本調整，本節依中華民國 115 年 11 月各工具之官方說明撰寫，畫面與本節不同時，應以各工具最新之說明為準。Skill 須在可執行程式碼之環境中運作，安裝前應確認帳號方案支援技能（Skills）及程式碼執行功能。帳號方案不支援技能或程式碼執行者，依（五）改用單檔指引。
 
 Skill 於github公開之倉庫網址：<https://github.com/jamc0406/exposure-contour>
 
@@ -274,6 +275,28 @@ Skill 於github公開之倉庫網址：<https://github.com/jamc0406/exposure-con
 #### （四）其他支援技能之工具
 
 Codex、Cursor 等支援技能（Agent Skills）格式之程式開發工具，得依各工具之說明安裝。
+
+#### （五）不能安裝 Skill 之環境：使用單檔指引
+
+部分環境無法安裝 Skill，例如免費版 Copilot、未開放技能功能之帳號方案，或公司內部 AI 限制上傳及執行程式等。此時得改用本計畫提供之單檔指引「濃度分佈圖_LLM作業指引_v1.3.md」（以下簡稱單檔指引）。單檔指引為 Skill 之純文字版本，內容與 Skill 一致，並內含 Skill 之全部計算程式、三份空白範本及檔案校驗碼，不需安裝，於對話開始時提供給模型即可使用。單檔指引下載位置（下載後檔名為 exposure-contour-LLM-guide.md）：<https://github.com/jamc0406/exposure-contour/releases/latest/download/exposure-contour-LLM-guide.md>
+
+使用步驟如下：
+
+1\. 開啟新對話，將單檔指引以附件方式上傳至對話框。檔案約 230 KB，應以上傳附件方式提供，不宜將內容複製貼上，以免超過對話框字數限制或內容遭截斷。工具不接受 .md 檔時，得將副檔名改為 .txt 後上傳。
+
+2\. 於對話框輸入單檔指引啟用提示詞（如下），由模型閱讀指引後回報其環境等級。
+
+3\. 依模型之提問提供平面圖、場域尺寸、儀器紀錄檔或標準資料表。後續操作與已安裝 Skill 者相同，本手冊各章及附錄一之提示詞均得沿用。
+
+4\. 單檔指引僅於該次對話有效，每開啟新對話均須重新上傳。
+
+5\. 模型未依規定作業，如自行撰寫內插程式、將未量測之測點填 0、自行設計表格，或未說明原因即不提供圖檔時，輸入「請重新閱讀指引第 0 章」。
+
+單檔指引啟用提示詞
+
+請完整閱讀這份指引並嚴格遵守。先依第 0、1 章判斷環境等級並回報，再問我手上有哪些資料。
+
+模型會依所在環境自動選擇作業方式。能執行 Python 程式者（如 ChatGPT、Gemini 之程式執行功能），全部以單檔指引內之程式計算及製圖，表格填入空白範本後以 Excel 檔提供，結果與安裝 Skill 者相同；環境缺少繁體中文字型時，圖面文字改以英文標示，Excel 檔仍為中文。不能執行程式者（如免費版 Copilot），模型應先說明限制，僅以人工計算辦理佈點座標、平均值、漂移及資料檢核，並提供可直接貼入空白範本之內容，不產生佈點圖及濃度分布圖，亦不計算 RRMSE、MAPE、熱區及管理值面積；此時製圖應改用 ConcTour。
 
 ### 四、安裝後之驗證
 
@@ -827,7 +850,7 @@ Skill 與 ConcTour 採用相同之計算方法及參數，使用者不需選擇�
 
 資料不得上傳外網雲端，或只需製圖者，得使用 ConcTour。操作步驟如下：
 
-（一）以瀏覽器開啟 ConcTour（https://jamc0406.github.io/ConcTour/）。首次開啟需下載運算環境，約 15 至 30 秒，右上角圓點轉為綠色即可使用。
+（一）以瀏覽器開啟 ConcTour（https://jamc0406.github.io/ConcTour/）。首次開啟需下載運算環境，約 15 至 30 秒，右上角圓點轉為綠色即可使用。資料不得上傳外網者，得下載離線版（<https://github.com/jamc0406/ConcTour/releases/latest/download/ConcTour-offline.zip>）於內部電腦開啟，操作方式相同。
 
 （二）上傳標準資料表，系統自動帶入場域尺寸、污染物名稱、單位及全部測點；亦得上傳 X、Y、濃度三欄之 CSV 檔，或於表格直接輸入。
 
